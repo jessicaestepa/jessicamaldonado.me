@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import {
   ArrowLeft,
@@ -9,14 +11,15 @@ import {
   Settings,
   Timer,
 } from 'lucide-react'
+import { site } from '@/lib/site'
 
 const ZOOM_MS = 900
 const ZOOM_EASE = 'cubic-bezier(0.34, 1.35, 0.64, 1)'
 
 const SECTIONS = {
   about: {
-    title: 'About Me',
-    tooltip: 'Pulse & purpose',
+    title: 'Sobre mí',
+    tooltip: 'Quién soy',
     icon: Heart,
   },
   projects: {
@@ -40,8 +43,8 @@ const SECTIONS = {
     icon: Calendar,
   },
   contact: {
-    title: 'Contact',
-    tooltip: 'Say hello',
+    title: 'Contacto',
+    tooltip: 'Hola',
     icon: Battery,
   },
 }
@@ -477,19 +480,20 @@ function SectionPanel({ id, darkMode, onBack }) {
         {id === 'about' && (
           <article className="max-w-3xl">
             <p className="font-serif text-lg leading-relaxed text-amber-50/95">
-              I build thoughtful interfaces and chase ideas that feel alive on the screen. My work
-              sits between product craft, systems thinking, and the small details people remember
-              without knowing why.
+              Hola, soy Jessica Maldonado Estepa — diseñadora de producto con foco en experiencias
+              digitales que se sienten claras, cuidadas y humanas. Como Jessica Maldonado, he
+              construido piezas donde el detalle importa tanto como el resultado.
             </p>
             <p className="mt-4 font-mono text-sm leading-relaxed">
-              Driven by curiosity, long runs, and the belief that software should feel as intentional
-              as a handwritten note. I care about clarity, momentum, and teams that communicate with
-              generosity.
+              Jessica trabaja en la intersección de sistemas, narrativa y usabilidad: prototipos que
+              convencen, equipos que alinean, y productos que la gente recuerda sin saber muy bien
+              por qué. Me mueve la curiosidad, las carreras largas y la idea de que el software
+              pueda ser tan intencional como una nota escrita a mano.
             </p>
             <p className="mt-4 font-mono text-sm leading-relaxed">
-              Outside the editor: trail miles, sketchbooks, and playlists that sound like neon over
-              rain. This site is a wrist‑first dashboard — a playful frame for the same focus I bring
-              to shipping real work.
+              Fuera del editor: kilómetros, libretas y listas que suenan a neón sobre lluvia. Este
+              sitio es un tablero “desde la muñeca”: el mismo enfoque que llevo cuando Jessica M.
+              Estepa pasa del concepto al envío.
             </p>
           </article>
         )}
@@ -623,25 +627,55 @@ function SectionPanel({ id, darkMode, onBack }) {
         {id === 'contact' && (
           <div className="max-w-xl space-y-6">
             <p className="font-serif text-lg text-amber-50">
-              Say hello — collaboration, speaking, or a long‑distance coffee over email.
+              Escríbeme — colaboraciones, charlas o un café a distancia. Jessica Maldonado Estepa
+              responde por email y redes.
             </p>
             <div className="flex flex-wrap items-center gap-3 font-mono text-sm">
               <a
                 className="rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-amber-100 transition hover:border-teal-400/50 hover:text-white"
-                href="mailto:hello@example.com"
+                href={`mailto:${site.email}`}
               >
-                hello@example.com
+                {site.email}
               </a>
-              <span className="text-zinc-500">Replace with your address.</span>
+              <span className="text-zinc-500">Jessica Maldonado Estepa</span>
             </div>
             <div className="flex flex-wrap gap-3 text-sm">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-2 font-mono text-zinc-300">
+              <a
+                href={site.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-2 font-mono text-zinc-300 transition hover:border-teal-400/40 hover:text-white"
+              >
                 <Settings className="h-4 w-4 text-teal-300" />
-                Social links (placeholders)
-              </span>
+                LinkedIn
+              </a>
+              <a
+                href={site.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-2 font-mono text-zinc-300 transition hover:border-teal-400/40 hover:text-white"
+              >
+                GitHub
+              </a>
+              <a
+                href={site.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-2 font-mono text-zinc-300 transition hover:border-teal-400/40 hover:text-white"
+              >
+                Instagram
+              </a>
+              <a
+                href={site.social.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-2 font-mono text-zinc-300 transition hover:border-teal-400/40 hover:text-white"
+              >
+                X / Twitter
+              </a>
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-2 font-mono text-zinc-300">
                 <Battery className="h-4 w-4 text-amber-300" />
-                Availability: open to select projects
+                Disponibilidad: proyectos selectos
               </span>
             </div>
           </div>
@@ -781,10 +815,14 @@ export default function PersonalSite() {
       <div className="relative z-10 mx-auto flex min-h-svh max-w-6xl flex-col items-center px-4 pb-10 pt-8 md:px-8">
         <header className="mb-8 w-full max-w-5xl text-left">
           <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-teal-400/90">
-            Jessica Maldonado
+            {site.profession}
           </p>
           <h1 className="mt-2 font-serif text-3xl tracking-tight text-amber-50 md:text-4xl">
-            A side-scrolling run, a giant Garmin, a whole world on your wrist.
+            <span className="block">{site.name}</span>
+            <span className="mt-3 block text-lg font-normal leading-snug text-amber-200/80 md:text-xl">
+              {site.tagline} — un recorrido en side-scroll, un Garmin gigante, tu mundo en la
+              muñeca.
+            </span>
           </h1>
         </header>
 
