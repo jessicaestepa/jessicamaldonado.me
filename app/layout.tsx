@@ -6,10 +6,10 @@ import { site } from '@/lib/site'
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: site.name,
     template: `%s | ${site.name}`,
   },
-  description: `Sitio personal de ${site.name} (${site.profession}). Proyectos, experiencia, notas y contacto.`,
+  description: `Sitio personal de ${site.name}. Proyectos, notas y contacto.`,
   keywords: [
     site.name,
     'Jessica Maldonado',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     locale: 'es_CO',
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
+    title: site.name,
     description: `Sitio personal de ${site.name}. Proyectos, experiencia y contacto.`,
     images: [
       {

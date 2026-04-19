@@ -28,7 +28,7 @@ export default async function OG() {
         <div style={{ fontSize: 64, fontWeight: 700, textAlign: 'center', padding: '0 48px' }}>
           {site.name}
         </div>
-        <div style={{ fontSize: 32, color: '#f59e0b', marginTop: 24 }}>{site.tagline}</div>
+        <div style={{ fontSize: 28, color: '#94a3b8', marginTop: 24 }}>jessicamaldonado.me</div>
       </div>
     ),
     size

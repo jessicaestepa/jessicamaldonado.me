@@ -188,42 +188,22 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
             viewBox="0 0 480 300"
             role="img"
             aria-label="Muñeca en estilo videojuego retro corriendo de perfil"
-            style={{ shapeRendering: 'crispEdges' }}
+            style={{ shapeRendering: 'geometricPrecision' }}
           >
             <ellipse cx="248" cy="278" rx="68" ry="12" fill="#000" opacity="0.12" />
 
             <rect x="158" y="72" width="20" height="56" rx="2" fill="#713f12" stroke={stroke} strokeWidth={sw} />
             <rect x="178" y="78" width="14" height="48" rx="2" fill="#92400e" stroke={stroke} strokeWidth={sw} />
 
-            <circle cx="228" cy="98" r="44" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
-
-            <rect x="188" y="92" width="36" height="14" fill="#fbcfe8" stroke={stroke} strokeWidth={sw} />
-            <rect x="196" y="84" width="10" height="10" fill={stroke} />
-            <rect x="214" y="84" width="10" height="10" fill={stroke} />
-            <rect x="204" y="102" width="12" height="4" fill={stroke} />
-            <rect x="200" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
-            <rect x="218" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
-
-            <rect x="210" y="136" width="36" height="12" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
-
-            <path
-              d="M188 148 L268 148 L258 228 L198 228 Z"
-              fill="#fbcfe8"
-              stroke={stroke}
-              strokeWidth={sw}
-              strokeLinejoin="miter"
-            />
-            <rect x="208" y="160" width="40" height="8" fill="#facc15" stroke={stroke} strokeWidth={2} />
-
-            <g transform="translate(228, 218)">
+            <g transform="translate(224, 210)">
               <g className="hero-leg-back">
                 <path
                   d="M0 0 L-8 44 L-36 82"
                   fill="none"
                   stroke="#fecaca"
                   strokeWidth="20"
-                  strokeLinecap="square"
-                  strokeLinejoin="miter"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <rect x="-48" y="76" width="28" height="12" fill="#fff" stroke={stroke} strokeWidth={sw} />
                 <rect x="-50" y="86" width="32" height="8" fill="#171717" stroke={stroke} strokeWidth={2} />
@@ -234,45 +214,55 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
                   fill="none"
                   stroke="#fecaca"
                   strokeWidth="20"
-                  strokeLinecap="square"
-                  strokeLinejoin="miter"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <rect x="32" y="72" width="28" height="12" fill="#fff" stroke={stroke} strokeWidth={sw} />
                 <rect x="30" y="82" width="32" height="8" fill="#171717" stroke={stroke} strokeWidth={2} />
               </g>
             </g>
 
-            <g className="hero-arm-back" transform="translate(248, 150)">
-              <path
-                d="M0 0 L28 38 L48 52"
-                fill="none"
-                stroke="#fecaca"
-                strokeWidth="16"
-                strokeLinecap="square"
-              />
-              <rect x="44" y="46" width="14" height="14" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
-            </g>
-
-            <rect x="232" y="148" width="20" height="28" fill="#fbcfe8" stroke={stroke} strokeWidth={sw} />
             <path
-              d="M232 160 L168 172 L128 176"
-              fill="none"
-              stroke="#fecaca"
-              strokeWidth="16"
-              strokeLinecap="square"
-            />
-
-            <path
-              d="M128 176 L96 182"
+              d="M258 118 L282 172"
               fill="none"
               stroke="#fecaca"
               strokeWidth="14"
-              strokeLinecap="square"
+              strokeLinecap="round"
             />
+            <circle cx="284" cy="176" r="9" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
+
+            <path
+              d="M198 118 L258 118 L252 222 L204 222 Z"
+              fill="#fbcfe8"
+              stroke={stroke}
+              strokeWidth={sw}
+              strokeLinejoin="round"
+            />
+            <rect x="208" y="158" width="40" height="8" fill="#facc15" stroke={stroke} strokeWidth={2} />
+
+            <path
+              d="M 218 122 Q 200 132 178 152 Q 156 168 122 178"
+              fill="none"
+              stroke="#fecaca"
+              strokeWidth="15"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+
+            <rect x="218" y="108" width="24" height="18" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
+
+            <circle cx="228" cy="98" r="44" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
+
+            <rect x="188" y="92" width="36" height="14" fill="#fbcfe8" stroke={stroke} strokeWidth={sw} />
+            <rect x="196" y="84" width="10" height="10" fill={stroke} />
+            <rect x="214" y="84" width="10" height="10" fill={stroke} />
+            <rect x="204" y="102" width="12" height="4" fill={stroke} />
+            <rect x="200" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
+            <rect x="218" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
           </svg>
 
           <div
-            className="pointer-events-none absolute left-[20.5%] top-[46%] z-[19] -translate-x-1/2 -translate-y-full text-neutral-900"
+            className="pointer-events-none absolute left-[25.5%] top-[42%] z-[19] -translate-x-1/2 -translate-y-full text-neutral-900"
             aria-hidden
           >
             <span className="hero-pointer-nudge inline-flex drop-shadow-[1px_1px_0_#fff]">
@@ -281,13 +271,13 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
           </div>
 
           <div
-            className="pointer-events-none absolute left-[20.5%] top-[52%] z-[18] flex h-[min(48vw,260px)] w-[min(48vw,260px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+            className="pointer-events-none absolute left-[25.5%] top-[59%] z-[18] flex h-[min(48vw,260px)] w-[min(48vw,260px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
             aria-hidden
           >
             <span className="hero-watch-ring h-full w-full rounded-full border-4 border-amber-500" />
           </div>
 
-          <div className="absolute left-[20.5%] top-[52%] z-20 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-[25.5%] top-[59%] z-20 -translate-x-1/2 -translate-y-1/2">
             <button
               ref={watchRef}
               type="button"
@@ -315,7 +305,7 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
           </div>
 
           <div
-            className="pointer-events-none absolute left-[20.5%] top-[74%] z-[21] w-[min(88%,240px)] -translate-x-1/2 text-center"
+            className="pointer-events-none absolute left-[25.5%] top-[78%] z-[21] w-[min(88%,240px)] -translate-x-1/2 text-center"
             aria-hidden
           >
             <span className="inline-block border-2 border-black bg-amber-300 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-wide text-black shadow-[3px_3px_0_#000]">
@@ -491,9 +481,9 @@ function SectionPanel({ id, darkMode, onBack }) {
         {id === 'about' && (
           <article className="max-w-3xl">
             <p className="font-serif text-lg leading-relaxed text-amber-50/95">
-              Hola, soy Jessica Maldonado Estepa — diseñadora de producto con foco en experiencias
-              digitales que se sienten claras, cuidadas y humanas. Como Jessica Maldonado, he
-              construido piezas donde el detalle importa tanto como el resultado.
+              Hola, soy Jessica Maldonado Estepa — trabajo en diseño de producto e interfaces que se
+              sienten claras, cuidadas y humanas. Como Jessica Maldonado, he construido piezas donde
+              el detalle importa tanto como el resultado.
             </p>
             <p className="mt-4 font-mono text-sm leading-relaxed">
               Jessica trabaja en la intersección de sistemas, narrativa y usabilidad: prototipos que
