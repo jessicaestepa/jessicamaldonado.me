@@ -66,15 +66,19 @@ function GrainOverlay() {
 function HillStrip() {
   return (
     <svg className="h-full w-1/2 shrink-0" viewBox="0 0 900 420" preserveAspectRatio="none" aria-hidden>
+      <rect width="900" height="420" fill="#ffffff" />
       <path
-        d="M0 300 L140 220 L280 260 L420 200 L560 240 L700 180 L900 140 L900 420 L0 420 Z"
-        fill="#52525b"
+        d="M0 360 L0 300 L80 300 L80 260 L140 260 L140 280 L220 280 L220 240 L300 240 L300 280 L380 280 L380 220 L460 220 L460 280 L540 280 L540 250 L620 250 L620 300 L700 300 L700 260 L780 260 L780 300 L860 300 L860 240 L900 240 L900 360 Z"
+        fill="#bbf7d0"
+        stroke="#14532d"
+        strokeWidth="3"
       />
       <path
-        d="M0 340 L200 280 L360 320 L520 260 L720 300 L900 260 L900 420 L0 420 Z"
-        fill="#3f3f46"
+        d="M0 420 L0 360 L900 360 L900 420 Z"
+        fill="#4ade80"
+        stroke="#14532d"
+        strokeWidth="3"
       />
-      <path d="M0 380 L240 340 L420 360 L600 330 L900 350 L900 420 L0 420 Z" fill="#0a0a0a" />
     </svg>
   )
 }
@@ -91,13 +95,13 @@ function ScrollingBackdrop({ parallax }) {
 
   return (
     <>
-      <div className="absolute inset-0 overflow-hidden opacity-90" style={slow}>
+      <div className="absolute inset-0 overflow-hidden opacity-100" style={slow}>
         <div className="flex h-full w-[200%] will-change-transform" style={track(38)}>
           <HillStrip />
           <HillStrip />
         </div>
       </div>
-      <div className="absolute inset-0 overflow-hidden opacity-[0.97]" style={mid}>
+      <div className="absolute inset-0 overflow-hidden opacity-95" style={mid}>
         <div className="flex h-full w-[200%] will-change-transform" style={track(26)}>
           <HillStrip />
           <HillStrip />
@@ -113,241 +117,217 @@ function ScrollingBackdrop({ parallax }) {
   )
 }
 
+function PixelCloud({ className = '' }) {
+  return (
+    <div className={`flex items-end gap-0.5 ${className}`} aria-hidden>
+      <div className="h-5 w-10 border-2 border-black bg-neutral-200" />
+      <div className="mb-2 h-5 w-6 border-2 border-black bg-neutral-200" />
+      <div className="h-5 w-8 border-2 border-black bg-neutral-200" />
+    </div>
+  )
+}
+
 function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
   const { x, y } = parallax
-  const skyX = x * 22
-  const skyY = y * 14
-  const runnerParallax = { transform: `translate3d(${x * 12}px, ${y * 6}px, 0)` }
-  const stroke = '#0f172a'
-  const sw = 3.5
+  const skyX = x * 14
+  const skyY = y * 8
+  const runnerParallax = { transform: `translate3d(${x * 10}px, ${y * 5}px, 0)` }
+  const stroke = '#0a0a0a'
+  const sw = 3
 
   return (
     <div
-      className="relative h-[min(88vh,780px)] w-full max-w-5xl overflow-hidden rounded-[2rem] border-4 border-zinc-800 bg-[#1a1025] shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
+      className="relative h-[min(86vh,720px)] w-full max-w-5xl overflow-hidden rounded-lg border-4 border-black bg-white shadow-[8px_8px_0_0_rgba(23,23,23,0.9)]"
       onMouseMove={onMove}
       role="presentation"
     >
       <div
-        className="absolute inset-0 will-change-transform"
+        className="pointer-events-none absolute inset-0 opacity-[0.035]"
         style={{
-          transform: `translate3d(${skyX}px, ${skyY}px, 0) scale(1.06)`,
-          transition: 'transform 120ms linear',
+          backgroundImage:
+            'repeating-linear-gradient(0deg, #000 0, #000 1px, transparent 1px, transparent 4px), repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 4px)',
+          backgroundSize: '4px 4px',
         }}
-      >
-        <svg className="h-[58%] w-full" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden>
-          <defs>
-            <linearGradient id="hero-sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#312e81" />
-              <stop offset="50%" stopColor="#9d174d" />
-              <stop offset="100%" stopColor="#0f172a" />
-            </linearGradient>
-          </defs>
-          <rect width="1200" height="360" fill="url(#hero-sky)" />
-          <circle cx="1020" cy="70" r="48" fill="#fde047" stroke={stroke} strokeWidth={sw} opacity="0.95" />
-        </svg>
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 top-[26%]">
-        <ScrollingBackdrop parallax={parallax} />
-      </div>
-
-      <div
-        className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#0f172a] via-[#0f172a]/95 to-transparent"
         aria-hidden
       />
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-[24%] h-2 bg-[#fbbf24]/90 shadow-[0_0_20px_rgba(251,191,36,0.5)]" />
+      <div
+        className="absolute inset-x-0 top-6 flex justify-center gap-16 md:gap-24"
+        style={{
+          transform: `translate3d(${skyX}px, ${skyY}px, 0)`,
+          transition: 'transform 120ms linear',
+        }}
+      >
+        <PixelCloud />
+        <PixelCloud className="scale-110" />
+        <PixelCloud className="hidden sm:flex" />
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 top-[22%]">
+        <ScrollingBackdrop parallax={parallax} />
+      </div>
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-[18%] h-1 bg-black" aria-hidden />
 
       <div
-        className="absolute bottom-[4%] left-1/2 z-10 w-[min(96vw,560px)] -translate-x-1/2 will-change-transform md:bottom-[5%]"
+        className="absolute bottom-0 left-0 right-0 flex h-[18%] items-start justify-center border-t-4 border-black bg-emerald-400 pt-2"
+        aria-hidden
+      >
+        <span className="font-mono text-[10px] font-black uppercase tracking-[0.35em] text-emerald-950">
+          ················
+        </span>
+      </div>
+
+      <div
+        className="absolute bottom-[3%] left-1/2 z-10 w-[min(96vw,520px)] -translate-x-1/2 will-change-transform md:bottom-[4%]"
         style={{ ...runnerParallax, transition: 'transform 120ms linear' }}
       >
         <div className="hero-runner-bob relative mx-auto">
           <svg
             className="relative z-0 block w-full"
-            viewBox="0 0 480 320"
+            viewBox="0 0 480 300"
             role="img"
-            aria-label="Personaje 2D corriendo de perfil; el reloj en la muñeca es el botón principal"
-            style={{ shapeRendering: 'geometricPrecision' }}
+            aria-label="Muñeca en estilo videojuego retro corriendo de perfil"
+            style={{ shapeRendering: 'crispEdges' }}
           >
-            <ellipse cx="248" cy="298" rx="72" ry="14" fill="#000" opacity="0.35" />
+            <ellipse cx="248" cy="278" rx="68" ry="12" fill="#000" opacity="0.12" />
 
-            <g className="hero-ponytail" transform="translate(208, 108)">
-              <path
-                d="M0 0 Q-52 8 -68 52 Q-72 88 -48 108"
-                fill="#5c2e0a"
-                stroke={stroke}
-                strokeWidth={sw}
-                strokeLinejoin="round"
-              />
-            </g>
+            <rect x="158" y="72" width="20" height="56" rx="2" fill="#713f12" stroke={stroke} strokeWidth={sw} />
+            <rect x="178" y="78" width="14" height="48" rx="2" fill="#92400e" stroke={stroke} strokeWidth={sw} />
 
-            <g transform="translate(278, 232)">
+            <circle cx="228" cy="98" r="44" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
+
+            <rect x="188" y="92" width="36" height="14" fill="#fbcfe8" stroke={stroke} strokeWidth={sw} />
+            <rect x="196" y="84" width="10" height="10" fill={stroke} />
+            <rect x="214" y="84" width="10" height="10" fill={stroke} />
+            <rect x="204" y="102" width="12" height="4" fill={stroke} />
+            <rect x="200" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
+            <rect x="218" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
+
+            <rect x="210" y="136" width="36" height="12" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
+
+            <path
+              d="M188 148 L268 148 L258 228 L198 228 Z"
+              fill="#fbcfe8"
+              stroke={stroke}
+              strokeWidth={sw}
+              strokeLinejoin="miter"
+            />
+            <rect x="208" y="160" width="40" height="8" fill="#facc15" stroke={stroke} strokeWidth={2} />
+
+            <g transform="translate(228, 218)">
               <g className="hero-leg-back">
                 <path
-                  d="M0 0 L-6 48 L-38 92"
+                  d="M0 0 L-8 44 L-36 82"
                   fill="none"
-                  stroke="#334155"
-                  strokeWidth="22"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke="#fecaca"
+                  strokeWidth="20"
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
                 />
-                <rect x="-52" y="86" width="36" height="14" rx="4" fill="#f8fafc" stroke={stroke} strokeWidth={sw} />
+                <rect x="-48" y="76" width="28" height="12" fill="#fff" stroke={stroke} strokeWidth={sw} />
+                <rect x="-50" y="86" width="32" height="8" fill="#171717" stroke={stroke} strokeWidth={2} />
               </g>
               <g className="hero-leg-front">
                 <path
-                  d="M0 0 L10 50 L48 88"
+                  d="M0 0 L10 46 L44 78"
                   fill="none"
-                  stroke="#334155"
-                  strokeWidth="22"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke="#fecaca"
+                  strokeWidth="20"
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
                 />
-                <rect x="34" y="82" width="38" height="16" rx="4" fill="#f8fafc" stroke={stroke} strokeWidth={sw} />
+                <rect x="32" y="72" width="28" height="12" fill="#fff" stroke={stroke} strokeWidth={sw} />
+                <rect x="30" y="82" width="32" height="8" fill="#171717" stroke={stroke} strokeWidth={2} />
               </g>
             </g>
 
-            <path
-              d="M248 232 L268 128 L308 118"
-              fill="none"
-              stroke="#0d9488"
-              strokeWidth="20"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="312" cy="116" r="11" fill="#fecdd3" stroke={stroke} strokeWidth={sw} />
-
-            <rect
-              x="252"
-              y="128"
-              width="56"
-              height="72"
-              rx="10"
-              transform="rotate(8 280 164)"
-              fill="#14b8a6"
-              stroke={stroke}
-              strokeWidth={sw}
-            />
-            <rect
-              x="258"
-              y="188"
-              width="52"
-              height="36"
-              rx="8"
-              transform="rotate(4 284 206)"
-              fill="#1e3a8a"
-              stroke={stroke}
-              strokeWidth={sw}
-            />
-
-            <g className="hero-arm-back" transform="translate(268, 142)">
+            <g className="hero-arm-back" transform="translate(248, 150)">
               <path
-                d="M0 0 Q18 28 42 52"
+                d="M0 0 L28 38 L48 52"
                 fill="none"
-                stroke="#0f766e"
-                strokeWidth="18"
-                strokeLinecap="round"
+                stroke="#fecaca"
+                strokeWidth="16"
+                strokeLinecap="square"
               />
-              <circle cx="46" cy="56" r="10" fill="#fecdd3" stroke={stroke} strokeWidth={sw} />
+              <rect x="44" y="46" width="14" height="14" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
             </g>
 
+            <rect x="232" y="148" width="20" height="28" fill="#fbcfe8" stroke={stroke} strokeWidth={sw} />
             <path
-              d="M268 150 L210 168 L168 172"
+              d="M232 160 L168 172 L128 176"
               fill="none"
-              stroke="#0f766e"
-              strokeWidth="20"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M168 172 L128 178"
-              fill="none"
-              stroke="#fecdd3"
-              strokeWidth="18"
-              strokeLinecap="round"
+              stroke="#fecaca"
+              strokeWidth="16"
+              strokeLinecap="square"
             />
 
-            <ellipse cx="318" cy="102" rx="34" ry="38" fill="#fecdd3" stroke={stroke} strokeWidth={sw} />
-            <circle cx="332" cy="96" r="5" fill={stroke} />
             <path
-              d="M338 108 Q342 112 336 114"
+              d="M128 176 L96 182"
               fill="none"
-              stroke={stroke}
-              strokeWidth="2.5"
-              strokeLinecap="round"
+              stroke="#fecaca"
+              strokeWidth="14"
+              strokeLinecap="square"
             />
-            <ellipse cx="326" cy="112" rx="5" ry="3" fill="#fda4af" opacity="0.9" />
-
-            <text
-              x="380"
-              y="56"
-              fill="#fbbf24"
-              fontSize="14"
-              fontFamily="ui-monospace, monospace"
-              fontWeight="bold"
-              opacity="0.85"
-            >
-              2D
-            </text>
           </svg>
 
           <div
-            className="pointer-events-none absolute left-[19.5%] top-[48%] z-[19] -translate-x-1/2 -translate-y-full text-amber-300 drop-shadow-[0_2px_0_#000]"
+            className="pointer-events-none absolute left-[20.5%] top-[46%] z-[19] -translate-x-1/2 -translate-y-full text-neutral-900"
             aria-hidden
           >
-            <span className="hero-pointer-nudge inline-flex">
-              <MousePointer2 className="h-10 w-10 md:h-12 md:w-12" strokeWidth={2.5} />
+            <span className="hero-pointer-nudge inline-flex drop-shadow-[1px_1px_0_#fff]">
+              <MousePointer2 className="h-9 w-9 md:h-11 md:w-11" strokeWidth={2.5} />
             </span>
           </div>
 
           <div
-            className="pointer-events-none absolute left-[19.5%] top-[54%] z-[18] flex h-[min(52vw,280px)] w-[min(52vw,280px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+            className="pointer-events-none absolute left-[20.5%] top-[52%] z-[18] flex h-[min(48vw,260px)] w-[min(48vw,260px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
             aria-hidden
           >
-            <span className="hero-watch-ring h-full w-full rounded-full border-4 border-amber-400/80" />
+            <span className="hero-watch-ring h-full w-full rounded-full border-4 border-amber-500" />
           </div>
 
-          <div className="absolute left-[19.5%] top-[54%] z-20 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-[20.5%] top-[52%] z-20 -translate-x-1/2 -translate-y-1/2">
             <button
               ref={watchRef}
               type="button"
               onClick={onWatchClick}
-              className="group relative flex aspect-square w-[clamp(11.5rem,42vmin,19rem)] cursor-pointer items-center justify-center rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300"
+              className="group relative flex aspect-square w-[clamp(10rem,38vmin,17rem)] cursor-pointer items-center justify-center rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-500"
               aria-label="Abrir panel del reloj"
               style={{
                 animation:
-                  'watch-glow 2.4s ease-in-out infinite, hero-watch-pulse 1.1s ease-in-out infinite',
+                  'watch-glow 2.2s ease-in-out infinite, hero-watch-pulse 1.05s ease-in-out infinite',
               }}
             >
-            <span className="pointer-events-none absolute inset-[-14px] rounded-full border-4 border-amber-400/50" />
-            <span className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-300/50 via-orange-500/35 to-teal-400/40 blur-xl" />
-            <span className="relative flex h-[86%] w-[86%] flex-col items-center justify-center gap-1 rounded-full bg-gradient-to-b from-zinc-600 to-zinc-950 p-2 shadow-[inset_0_4px_12px_rgba(255,255,255,0.2),0_12px_0_#020617,0_20px_40px_rgba(0,0,0,0.65)] ring-4 ring-amber-400/90 ring-offset-4 ring-offset-[#1a1025]">
-              <span className="absolute top-2 text-[9px] font-black uppercase tracking-widest text-amber-200">
-                Pulsa
+              <span className="pointer-events-none absolute inset-[-12px] rounded-full border-4 border-amber-500/70" />
+              <span className="absolute inset-0 rounded-full bg-amber-400/35 blur-lg" />
+              <span className="relative flex h-[86%] w-[86%] flex-col items-center justify-center gap-0.5 rounded-full border-4 border-black bg-gradient-to-b from-zinc-500 to-zinc-900 p-2 shadow-[inset_0_3px_0_rgba(255,255,255,0.25),0_10px_0_#000,0_14px_0_rgba(0,0,0,0.25)] ring-4 ring-amber-400 ring-offset-4 ring-offset-white">
+                <span className="absolute top-1.5 text-[8px] font-black uppercase tracking-widest text-amber-200">
+                  Pulsa
+                </span>
+                <span className="flex h-[56%] w-[56%] flex-col items-center justify-center rounded-full border-2 border-teal-400 bg-[#020617]">
+                  <Heart className="h-7 w-7 text-rose-400 md:h-9 md:w-9" strokeWidth={2.2} fill="#fb7185" />
+                  <span className="mt-0.5 font-mono text-[9px] font-bold text-teal-300">142</span>
+                </span>
+                <span className="text-[7px] font-black uppercase tracking-[0.15em] text-zinc-400">Garmin</span>
               </span>
-              <span className="flex h-[58%] w-[58%] flex-col items-center justify-center rounded-full bg-[#020617] ring-2 ring-teal-400/80">
-                <Heart className="h-8 w-8 text-rose-400 md:h-10 md:w-10" strokeWidth={2.2} fill="#fb7185" />
-                <span className="mt-0.5 font-mono text-[10px] font-bold text-teal-300">142</span>
-              </span>
-              <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-400">Garmin</span>
-            </span>
             </button>
           </div>
 
           <div
-            className="pointer-events-none absolute left-[19.5%] top-[78%] z-[21] w-[min(90%,280px)] -translate-x-1/2 text-center"
+            className="pointer-events-none absolute left-[20.5%] top-[74%] z-[21] w-[min(88%,240px)] -translate-x-1/2 text-center"
             aria-hidden
           >
-            <span className="inline-block rounded-full border-2 border-amber-400 bg-black/80 px-4 py-2 font-black uppercase tracking-wide text-amber-300 shadow-lg">
+            <span className="inline-block border-2 border-black bg-amber-300 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-wide text-black shadow-[3px_3px_0_#000]">
               ¡Pulsa el reloj!
             </span>
           </div>
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-4">
+      <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center px-4">
         <p
-          className={`max-w-lg text-center font-mono text-xs font-bold uppercase tracking-wide text-amber-200 md:text-sm ${
+          className={`max-w-lg text-center font-mono text-[10px] font-bold uppercase tracking-wide text-neutral-600 md:text-xs ${
             showCue ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
@@ -355,7 +335,7 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
             animation: showCue ? 'cue-fade 900ms ease-out forwards' : 'none',
           }}
         >
-          El reloj enorme es el botón: ábrelo para ver el tablero.
+          El reloj es el botón del juego — ábrelo para el tablero.
         </p>
       </div>
     </div>
@@ -844,16 +824,13 @@ export default function PersonalSite() {
       <GrainOverlay />
 
       <div className="relative z-10 mx-auto flex min-h-svh max-w-6xl flex-col items-center px-4 pb-10 pt-8 md:px-8">
-        <header className="mb-8 w-full max-w-5xl text-left">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-teal-400/90">
-            {site.profession}
-          </p>
-          <h1 className="mt-2 font-serif text-3xl tracking-tight text-amber-50 md:text-4xl">
-            <span className="block">{site.name}</span>
-            <span className="mt-3 block text-lg font-normal leading-snug text-amber-200/80 md:text-xl">
-              {site.tagline} — un recorrido en side-scroll, un Garmin gigante, tu mundo en la
-              muñeca.
-            </span>
+        <header className="mb-6 w-full max-w-5xl text-left">
+          <h1
+            className={`font-serif text-2xl font-semibold tracking-tight md:text-3xl ${
+              darkMode ? 'text-zinc-100' : 'text-zinc-900'
+            }`}
+          >
+            {site.name}
           </h1>
         </header>
 
