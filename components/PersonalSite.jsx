@@ -12,6 +12,7 @@ import {
   Settings,
   Timer,
 } from 'lucide-react'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { site } from '@/lib/site'
 
 const ZOOM_MS = 900
@@ -132,8 +133,6 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
   const skyX = x * 14
   const skyY = y * 8
   const runnerParallax = { transform: `translate3d(${x * 10}px, ${y * 5}px, 0)` }
-  const stroke = '#0a0a0a'
-  const sw = 3
 
   return (
     <div
@@ -182,87 +181,23 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
         className="absolute bottom-[3%] left-1/2 z-10 w-[min(96vw,520px)] -translate-x-1/2 will-change-transform md:bottom-[4%]"
         style={{ ...runnerParallax, transition: 'transform 120ms linear' }}
       >
-        <div className="hero-runner-bob relative mx-auto">
-          <svg
-            className="relative z-0 block w-full"
-            viewBox="0 0 480 300"
+        <div className="hero-runner-bob relative mx-auto w-full max-w-[540px]">
+          <div
+            className="relative z-0 h-[min(48vh,440px)] w-full overflow-hidden rounded-md border-2 border-black bg-white"
             role="img"
-            aria-label="Muñeca en estilo videojuego retro corriendo de perfil"
-            style={{ shapeRendering: 'geometricPrecision' }}
+            aria-label="Animación: chica corriendo (ciclo de pasos)"
           >
-            <ellipse cx="248" cy="278" rx="68" ry="12" fill="#000" opacity="0.12" />
-
-            <rect x="158" y="72" width="20" height="56" rx="2" fill="#713f12" stroke={stroke} strokeWidth={sw} />
-            <rect x="178" y="78" width="14" height="48" rx="2" fill="#92400e" stroke={stroke} strokeWidth={sw} />
-
-            <g transform="translate(224, 210)">
-              <g className="hero-leg-back">
-                <path
-                  d="M0 0 L-8 44 L-36 82"
-                  fill="none"
-                  stroke="#fecaca"
-                  strokeWidth="20"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <rect x="-48" y="76" width="28" height="12" fill="#fff" stroke={stroke} strokeWidth={sw} />
-                <rect x="-50" y="86" width="32" height="8" fill="#171717" stroke={stroke} strokeWidth={2} />
-              </g>
-              <g className="hero-leg-front">
-                <path
-                  d="M0 0 L10 46 L44 78"
-                  fill="none"
-                  stroke="#fecaca"
-                  strokeWidth="20"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <rect x="32" y="72" width="28" height="12" fill="#fff" stroke={stroke} strokeWidth={sw} />
-                <rect x="30" y="82" width="32" height="8" fill="#171717" stroke={stroke} strokeWidth={2} />
-              </g>
-            </g>
-
-            <path
-              d="M258 118 L282 172"
-              fill="none"
-              stroke="#fecaca"
-              strokeWidth="14"
-              strokeLinecap="round"
+            <DotLottieReact
+              src="/lottie/girl-running.lottie"
+              loop
+              autoplay
+              layout={{ fit: 'contain', align: [0.5, 1] }}
+              className="h-full w-full"
             />
-            <circle cx="284" cy="176" r="9" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
-
-            <path
-              d="M198 118 L258 118 L252 222 L204 222 Z"
-              fill="#fbcfe8"
-              stroke={stroke}
-              strokeWidth={sw}
-              strokeLinejoin="round"
-            />
-            <rect x="208" y="158" width="40" height="8" fill="#facc15" stroke={stroke} strokeWidth={2} />
-
-            <path
-              d="M 218 122 Q 200 132 178 152 Q 156 168 122 178"
-              fill="none"
-              stroke="#fecaca"
-              strokeWidth="15"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-
-            <rect x="218" y="108" width="24" height="18" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
-
-            <circle cx="228" cy="98" r="44" fill="#fecaca" stroke={stroke} strokeWidth={sw} />
-
-            <rect x="188" y="92" width="36" height="14" fill="#fbcfe8" stroke={stroke} strokeWidth={sw} />
-            <rect x="196" y="84" width="10" height="10" fill={stroke} />
-            <rect x="214" y="84" width="10" height="10" fill={stroke} />
-            <rect x="204" y="102" width="12" height="4" fill={stroke} />
-            <rect x="200" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
-            <rect x="218" y="108" width="6" height="6" fill="#fb7185" stroke={stroke} strokeWidth="1.5" />
-          </svg>
+          </div>
 
           <div
-            className="pointer-events-none absolute left-[25.5%] top-[42%] z-[19] -translate-x-1/2 -translate-y-full text-neutral-900"
+            className="pointer-events-none absolute left-[30%] top-[38%] z-[19] -translate-x-1/2 -translate-y-full text-neutral-900"
             aria-hidden
           >
             <span className="hero-pointer-nudge inline-flex drop-shadow-[1px_1px_0_#fff]">
@@ -271,13 +206,13 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
           </div>
 
           <div
-            className="pointer-events-none absolute left-[25.5%] top-[59%] z-[18] flex h-[min(48vw,260px)] w-[min(48vw,260px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+            className="pointer-events-none absolute left-[32%] top-[52%] z-[18] flex h-[min(48vw,260px)] w-[min(48vw,260px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
             aria-hidden
           >
             <span className="hero-watch-ring h-full w-full rounded-full border-4 border-amber-500" />
           </div>
 
-          <div className="absolute left-[25.5%] top-[59%] z-20 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-[32%] top-[52%] z-20 -translate-x-1/2 -translate-y-1/2">
             <button
               ref={watchRef}
               type="button"
@@ -305,7 +240,7 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
           </div>
 
           <div
-            className="pointer-events-none absolute left-[25.5%] top-[78%] z-[21] w-[min(88%,240px)] -translate-x-1/2 text-center"
+            className="pointer-events-none absolute left-[32%] top-[72%] z-[21] w-[min(88%,240px)] -translate-x-1/2 text-center"
             aria-hidden
           >
             <span className="inline-block border-2 border-black bg-amber-300 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-wide text-black shadow-[3px_3px_0_#000]">
