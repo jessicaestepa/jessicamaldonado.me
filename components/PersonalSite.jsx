@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import {
+  ArrowDown,
   ArrowLeft,
   Battery,
   Calendar,
   Heart,
   MapPin,
-  MousePointer2,
   Mountain,
   Settings,
   Timer,
@@ -64,203 +64,71 @@ function GrainOverlay() {
   )
 }
 
-function HillStrip() {
-  return (
-    <svg className="h-full w-1/2 shrink-0" viewBox="0 0 900 420" preserveAspectRatio="none" aria-hidden>
-      <rect width="900" height="420" fill="#ffffff" />
-      <path
-        d="M0 360 L0 300 L80 300 L80 260 L140 260 L140 280 L220 280 L220 240 L300 240 L300 280 L380 280 L380 220 L460 220 L460 280 L540 280 L540 250 L620 250 L620 300 L700 300 L700 260 L780 260 L780 300 L860 300 L860 240 L900 240 L900 360 Z"
-        fill="#bbf7d0"
-        stroke="#14532d"
-        strokeWidth="3"
-      />
-      <path
-        d="M0 420 L0 360 L900 360 L900 420 Z"
-        fill="#4ade80"
-        stroke="#14532d"
-        strokeWidth="3"
-      />
-    </svg>
-  )
-}
-
-function ScrollingBackdrop({ parallax }) {
-  const { x, y } = parallax
-  const slow = { transform: `translate3d(${x * 18}px, ${y * 10}px, 0)` }
-  const mid = { transform: `translate3d(${x * 28}px, ${y * 14}px, 0)` }
-  const fast = { transform: `translate3d(${x * 42}px, ${y * 8}px, 0)` }
-
-  const track = (durationSec) => ({
-    animation: `hero-bg-scroll ${durationSec}s linear infinite`,
-  })
-
-  return (
-    <>
-      <div className="absolute inset-0 overflow-hidden opacity-100" style={slow}>
-        <div className="flex h-full w-[200%] will-change-transform" style={track(38)}>
-          <HillStrip />
-          <HillStrip />
-        </div>
-      </div>
-      <div className="absolute inset-0 overflow-hidden opacity-95" style={mid}>
-        <div className="flex h-full w-[200%] will-change-transform" style={track(26)}>
-          <HillStrip />
-          <HillStrip />
-        </div>
-      </div>
-      <div className="absolute inset-0 overflow-hidden" style={fast}>
-        <div className="flex h-full w-[200%] will-change-transform" style={track(16)}>
-          <HillStrip />
-          <HillStrip />
-        </div>
-      </div>
-    </>
-  )
-}
-
-function PixelCloud({ className = '' }) {
-  return (
-    <div className={`flex items-end gap-0.5 ${className}`} aria-hidden>
-      <div className="h-5 w-10 border-2 border-black bg-neutral-200" />
-      <div className="mb-2 h-5 w-6 border-2 border-black bg-neutral-200" />
-      <div className="h-5 w-8 border-2 border-black bg-neutral-200" />
-    </div>
-  )
-}
-
 function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
   const { x, y } = parallax
-  const skyX = x * 14
-  const skyY = y * 8
-  const runnerParallax = { transform: `translate3d(${x * 10}px, ${y * 5}px, 0)` }
+  const runnerParallax = { transform: `translate3d(${x * 8}px, ${y * 4}px, 0)` }
 
   return (
     <div
-      className="relative h-[min(86vh,720px)] w-full max-w-5xl overflow-hidden rounded-lg border-4 border-black bg-white shadow-[8px_8px_0_0_rgba(23,23,23,0.9)]"
+      className="relative flex h-[min(82vh,680px)] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-b from-white via-slate-50/95 to-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.1)]"
       onMouseMove={onMove}
       role="presentation"
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, #000 0, #000 1px, transparent 1px, transparent 4px), repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 4px)',
-          backgroundSize: '4px 4px',
+          background:
+            'radial-gradient(ellipse 85% 55% at 50% 35%, rgba(251, 191, 36, 0.07), transparent 55%)',
         }}
         aria-hidden
       />
 
       <div
-        className="absolute inset-x-0 top-6 flex justify-center gap-16 md:gap-24"
-        style={{
-          transform: `translate3d(${skyX}px, ${skyY}px, 0)`,
-          transition: 'transform 120ms linear',
-        }}
+        className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center px-4 py-10"
+        style={{ ...runnerParallax, transition: 'transform 100ms linear' }}
       >
-        <PixelCloud />
-        <PixelCloud className="scale-110" />
-        <PixelCloud className="hidden sm:flex" />
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 top-[22%]">
-        <ScrollingBackdrop parallax={parallax} />
-      </div>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-[18%] h-1 bg-black" aria-hidden />
-
-      <div
-        className="absolute bottom-0 left-0 right-0 flex h-[18%] items-start justify-center border-t-4 border-black bg-emerald-400 pt-2"
-        aria-hidden
-      >
-        <span className="font-mono text-[10px] font-black uppercase tracking-[0.35em] text-emerald-950">
-          ················
-        </span>
-      </div>
-
-      <div
-        className="absolute bottom-[3%] left-1/2 z-10 w-[min(96vw,520px)] -translate-x-1/2 will-change-transform md:bottom-[4%]"
-        style={{ ...runnerParallax, transition: 'transform 120ms linear' }}
-      >
-        <div className="hero-runner-bob relative mx-auto w-full max-w-[540px]">
+        <div className="hero-runner-bob flex w-full max-w-lg flex-col items-center">
           <div
-            className="relative z-0 h-[min(48vh,440px)] w-full overflow-hidden rounded-md border-2 border-black bg-white"
+            className="relative z-0 h-[min(48vh,420px)] w-full max-w-[min(100%,380px)] overflow-hidden rounded-xl bg-white shadow-inner ring-1 ring-neutral-200/90"
             role="img"
-            aria-label="Animación: chica corriendo (ciclo de pasos)"
+            aria-label="Animación: chica corriendo"
           >
             <DotLottieReact
               src="/lottie/girl-running.lottie"
               loop
               autoplay
-              layout={{ fit: 'contain', align: [0.5, 1] }}
+              layout={{ fit: 'contain', align: [0.5, 0.5] }}
               className="h-full w-full"
             />
           </div>
 
-          <div
-            className="pointer-events-none absolute left-[30%] top-[38%] z-[19] -translate-x-1/2 -translate-y-full text-neutral-900"
-            aria-hidden
-          >
-            <span className="hero-pointer-nudge inline-flex drop-shadow-[1px_1px_0_#fff]">
-              <MousePointer2 className="h-9 w-9 md:h-11 md:w-11" strokeWidth={2.5} />
-            </span>
-          </div>
-
-          <div
-            className="pointer-events-none absolute left-[32%] top-[52%] z-[18] flex h-[min(48vw,260px)] w-[min(48vw,260px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
-            aria-hidden
-          >
-            <span className="hero-watch-ring h-full w-full rounded-full border-4 border-amber-500" />
-          </div>
-
-          <div className="absolute left-[32%] top-[52%] z-20 -translate-x-1/2 -translate-y-1/2">
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <ArrowDown
+              className="h-7 w-7 text-neutral-400 motion-safe:animate-bounce"
+              strokeWidth={2.5}
+              aria-hidden
+            />
             <button
               ref={watchRef}
               type="button"
               onClick={onWatchClick}
-              className="group relative flex aspect-square w-[clamp(10rem,38vmin,17rem)] cursor-pointer items-center justify-center rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-500"
-              aria-label="Abrir panel del reloj"
-              style={{
-                animation:
-                  'watch-glow 2.2s ease-in-out infinite, hero-watch-pulse 1.05s ease-in-out infinite',
-              }}
+              className="rounded-full bg-neutral-900 px-8 py-2.5 text-sm font-semibold tracking-wide text-white shadow-md transition hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100"
+              aria-label="Click here to open your dashboard"
             >
-              <span className="pointer-events-none absolute inset-[-12px] rounded-full border-4 border-amber-500/70" />
-              <span className="absolute inset-0 rounded-full bg-amber-400/35 blur-lg" />
-              <span className="relative flex h-[86%] w-[86%] flex-col items-center justify-center gap-0.5 rounded-full border-4 border-black bg-gradient-to-b from-zinc-500 to-zinc-900 p-2 shadow-[inset_0_3px_0_rgba(255,255,255,0.25),0_10px_0_#000,0_14px_0_rgba(0,0,0,0.25)] ring-4 ring-amber-400 ring-offset-4 ring-offset-white">
-                <span className="absolute top-1.5 text-[8px] font-black uppercase tracking-widest text-amber-200">
-                  Pulsa
-                </span>
-                <span className="flex h-[56%] w-[56%] flex-col items-center justify-center rounded-full border-2 border-teal-400 bg-[#020617]">
-                  <Heart className="h-7 w-7 text-rose-400 md:h-9 md:w-9" strokeWidth={2.2} fill="#fb7185" />
-                  <span className="mt-0.5 font-mono text-[9px] font-bold text-teal-300">142</span>
-                </span>
-                <span className="text-[7px] font-black uppercase tracking-[0.15em] text-zinc-400">Garmin</span>
-              </span>
+              Click here
             </button>
-          </div>
-
-          <div
-            className="pointer-events-none absolute left-[32%] top-[72%] z-[21] w-[min(88%,240px)] -translate-x-1/2 text-center"
-            aria-hidden
-          >
-            <span className="inline-block border-2 border-black bg-amber-300 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-wide text-black shadow-[3px_3px_0_#000]">
-              ¡Pulsa el reloj!
-            </span>
           </div>
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center px-4">
+      <div className="pointer-events-none px-4 pb-5 text-center">
         <p
-          className={`max-w-lg text-center font-mono text-[10px] font-bold uppercase tracking-wide text-neutral-600 md:text-xs ${
-            showCue ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`text-xs text-neutral-500 ${showCue ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}
           style={{
-            transition: 'opacity 800ms ease',
             animation: showCue ? 'cue-fade 900ms ease-out forwards' : 'none',
           }}
         >
-          El reloj es el botón del juego — ábrelo para el tablero.
+          Use the button above to open your watch dashboard.
         </p>
       </div>
     </div>
