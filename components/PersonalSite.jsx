@@ -7,6 +7,7 @@ import {
   Calendar,
   Heart,
   MapPin,
+  MousePointer2,
   Mountain,
   Settings,
   Timer,
@@ -117,10 +118,12 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
   const skyX = x * 22
   const skyY = y * 14
   const runnerParallax = { transform: `translate3d(${x * 12}px, ${y * 6}px, 0)` }
+  const stroke = '#0f172a'
+  const sw = 3.5
 
   return (
     <div
-      className="relative h-[min(88vh,760px)] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-amber-500/15 bg-zinc-950 shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
+      className="relative h-[min(88vh,780px)] w-full max-w-5xl overflow-hidden rounded-[2rem] border-4 border-zinc-800 bg-[#1a1025] shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
       onMouseMove={onMove}
       role="presentation"
     >
@@ -131,192 +134,220 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
           transition: 'transform 120ms linear',
         }}
       >
-        <svg className="h-[62%] w-full" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden>
+        <svg className="h-[58%] w-full" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden>
           <defs>
             <linearGradient id="hero-sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#1e1b4b" />
-              <stop offset="45%" stopColor="#7c2d12" />
-              <stop offset="100%" stopColor="#0c0a09" />
+              <stop offset="0%" stopColor="#312e81" />
+              <stop offset="50%" stopColor="#9d174d" />
+              <stop offset="100%" stopColor="#0f172a" />
             </linearGradient>
-            <radialGradient id="hero-sun" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#fb923c" stopOpacity="0" />
-            </radialGradient>
-            <filter id="hero-soft" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="1.4" />
-            </filter>
           </defs>
           <rect width="1200" height="360" fill="url(#hero-sky)" />
-          <circle cx="980" cy="90" r="95" fill="url(#hero-sun)" opacity="0.55" filter="url(#hero-soft)" />
+          <circle cx="1020" cy="70" r="48" fill="#fde047" stroke={stroke} strokeWidth={sw} opacity="0.95" />
         </svg>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 top-[28%]">
+      <div className="absolute inset-x-0 bottom-0 top-[26%]">
         <ScrollingBackdrop parallax={parallax} />
       </div>
 
       <div
-        className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-zinc-950 via-zinc-950/90 to-transparent"
+        className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#0f172a] via-[#0f172a]/95 to-transparent"
         aria-hidden
       />
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-[26%] flex h-14 items-end border-b border-amber-900/25">
-        <div
-          className="h-3 w-full opacity-40"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(90deg, rgba(251,191,36,0.15) 0 18px, transparent 18px 36px)',
-          }}
-        />
-      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-[24%] h-2 bg-[#fbbf24]/90 shadow-[0_0_20px_rgba(251,191,36,0.5)]" />
 
       <div
-        className="absolute bottom-[6%] left-[4%] z-10 w-[min(92vw,460px)] will-change-transform md:left-[10%]"
+        className="absolute bottom-[4%] left-1/2 z-10 w-[min(96vw,560px)] -translate-x-1/2 will-change-transform md:bottom-[5%]"
         style={{ ...runnerParallax, transition: 'transform 120ms linear' }}
       >
-        <div className="hero-runner-bob relative">
+        <div className="hero-runner-bob relative mx-auto">
           <svg
-            className="relative z-0 block w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.45)]"
-            viewBox="0 0 420 280"
+            className="relative z-0 block w-full"
+            viewBox="0 0 480 320"
             role="img"
-            aria-label="Side view of a runner with an oversized sport watch"
+            aria-label="Personaje 2D corriendo de perfil; el reloj en la muñeca es el botón principal"
+            style={{ shapeRendering: 'geometricPrecision' }}
           >
-            <defs>
-              <linearGradient id="hero-skin" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#fecdd3" />
-                <stop offset="100%" stopColor="#fb923c" />
-              </linearGradient>
-              <linearGradient id="hero-tee" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#14b8a6" />
-                <stop offset="100%" stopColor="#0f766e" />
-              </linearGradient>
-              <linearGradient id="hero-shorts" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1e293b" />
-                <stop offset="100%" stopColor="#020617" />
-              </linearGradient>
-            </defs>
+            <ellipse cx="248" cy="298" rx="72" ry="14" fill="#000" opacity="0.35" />
 
-            <ellipse cx="310" cy="258" rx="34" ry="10" fill="#020617" opacity="0.35" />
-
-            <g className="hero-ponytail">
+            <g className="hero-ponytail" transform="translate(208, 108)">
               <path
-                d="M138 96 C118 108 108 132 112 156 C116 176 128 188 140 182"
-                fill="none"
-                stroke="#7c2d12"
-                strokeWidth="16"
-                strokeLinecap="round"
+                d="M0 0 Q-52 8 -68 52 Q-72 88 -48 108"
+                fill="#5c2e0a"
+                stroke={stroke}
+                strokeWidth={sw}
+                strokeLinejoin="round"
               />
             </g>
 
-            <ellipse cx="168" cy="92" rx="34" ry="38" fill="url(#hero-skin)" />
-            <path
-              d="M188 78 C208 72 228 82 232 98 C228 92 210 86 196 90"
-              fill="none"
-              stroke="#fb7185"
-              strokeWidth="6"
-              strokeLinecap="round"
-              opacity="0.55"
-            />
-
-            <path
-              d="M178 128 C188 118 210 118 228 128 L238 188 C232 210 210 218 188 214 C168 210 158 198 160 178 Z"
-              fill="url(#hero-tee)"
-            />
-            <path
-              d="M168 200 C188 192 218 196 242 208 L252 232 C230 248 188 252 158 238 Z"
-              fill="url(#hero-shorts)"
-            />
-
-            <g className="hero-arm-back">
-              <path
-                d="M218 142 C232 150 248 168 252 196"
-                fill="none"
-                stroke="#0d9488"
-                strokeWidth="16"
-                strokeLinecap="round"
-              />
-              <circle cx="256" cy="206" r="10" fill="url(#hero-skin)" />
-            </g>
-
-            <path
-              d="M188 150 C168 158 138 175 118 168 C108 164 102 156 108 148"
-              fill="none"
-              stroke="#0f766e"
-              strokeWidth="15"
-              strokeLinecap="round"
-            />
-            <path
-              d="M118 168 C98 172 88 158 92 148 C96 138 108 138 118 146"
-              fill="none"
-              stroke="url(#hero-skin)"
-              strokeWidth="14"
-              strokeLinecap="round"
-            />
-
-            <g transform="translate(208, 208)">
+            <g transform="translate(278, 232)">
               <g className="hero-leg-back">
                 <path
-                  d="M0 0 L0 54 L-24 108"
+                  d="M0 0 L-6 48 L-38 92"
                   fill="none"
-                  stroke="#1e293b"
-                  strokeWidth="17"
+                  stroke="#334155"
+                  strokeWidth="22"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <ellipse cx="-28" cy="112" rx="18" ry="9" fill="#0f172a" />
+                <rect x="-52" y="86" width="36" height="14" rx="4" fill="#f8fafc" stroke={stroke} strokeWidth={sw} />
               </g>
               <g className="hero-leg-front">
                 <path
-                  d="M0 0 L0 54 L30 110"
+                  d="M0 0 L10 50 L48 88"
                   fill="none"
-                  stroke="#1e293b"
-                  strokeWidth="17"
+                  stroke="#334155"
+                  strokeWidth="22"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <ellipse cx="36" cy="114" rx="18" ry="9" fill="#0f172a" />
+                <rect x="34" y="82" width="38" height="16" rx="4" fill="#f8fafc" stroke={stroke} strokeWidth={sw} />
               </g>
             </g>
 
-            <circle cx="104" cy="156" r="62" fill="#020617" opacity="0.2" />
-            <circle cx="104" cy="156" r="58" fill="none" stroke="#27272a" strokeWidth="10" />
-            <circle cx="104" cy="156" r="46" fill="#030712" stroke="#3f3f46" strokeWidth="4" />
-            <circle cx="104" cy="156" r="34" fill="#020617" />
-            <circle cx="104" cy="156" r="26" fill="none" stroke="rgba(45,212,191,0.35)" strokeWidth="2" />
             <path
-              d="M88 148 H120"
-              stroke="rgba(251,191,36,0.35)"
-              strokeWidth="2"
+              d="M248 232 L268 128 L308 118"
+              fill="none"
+              stroke="#0d9488"
+              strokeWidth="20"
               strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="312" cy="116" r="11" fill="#fecdd3" stroke={stroke} strokeWidth={sw} />
+
+            <rect
+              x="252"
+              y="128"
+              width="56"
+              height="72"
+              rx="10"
+              transform="rotate(8 280 164)"
+              fill="#14b8a6"
+              stroke={stroke}
+              strokeWidth={sw}
+            />
+            <rect
+              x="258"
+              y="188"
+              width="52"
+              height="36"
+              rx="8"
+              transform="rotate(4 284 206)"
+              fill="#1e3a8a"
+              stroke={stroke}
+              strokeWidth={sw}
+            />
+
+            <g className="hero-arm-back" transform="translate(268, 142)">
+              <path
+                d="M0 0 Q18 28 42 52"
+                fill="none"
+                stroke="#0f766e"
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+              <circle cx="46" cy="56" r="10" fill="#fecdd3" stroke={stroke} strokeWidth={sw} />
+            </g>
+
+            <path
+              d="M268 150 L210 168 L168 172"
+              fill="none"
+              stroke="#0f766e"
+              strokeWidth="20"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
-              d="M104 162 V176"
-              stroke="rgba(251,191,36,0.25)"
-              strokeWidth="2"
+              d="M168 172 L128 178"
+              fill="none"
+              stroke="#fecdd3"
+              strokeWidth="18"
               strokeLinecap="round"
             />
+
+            <ellipse cx="318" cy="102" rx="34" ry="38" fill="#fecdd3" stroke={stroke} strokeWidth={sw} />
+            <circle cx="332" cy="96" r="5" fill={stroke} />
+            <path
+              d="M338 108 Q342 112 336 114"
+              fill="none"
+              stroke={stroke}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <ellipse cx="326" cy="112" rx="5" ry="3" fill="#fda4af" opacity="0.9" />
+
+            <text
+              x="380"
+              y="56"
+              fill="#fbbf24"
+              fontSize="14"
+              fontFamily="ui-monospace, monospace"
+              fontWeight="bold"
+              opacity="0.85"
+            >
+              2D
+            </text>
           </svg>
 
-          <button
-            ref={watchRef}
-            type="button"
-            onClick={onWatchClick}
-            className="group absolute left-[24.8%] top-[55.7%] z-20 flex aspect-square w-[clamp(7.25rem,26vmin,13.5rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80"
-            aria-label="Open watch dashboard"
-            style={{ animation: 'watch-glow 3.2s ease-in-out infinite' }}
+          <div
+            className="pointer-events-none absolute left-[19.5%] top-[48%] z-[19] -translate-x-1/2 -translate-y-full text-amber-300 drop-shadow-[0_2px_0_#000]"
+            aria-hidden
           >
-            <span className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-400/30 via-teal-400/20 to-transparent opacity-90 blur-lg transition group-hover:opacity-100" />
-            <span className="relative flex h-[78%] w-[78%] items-center justify-center rounded-full bg-gradient-to-br from-zinc-700 to-black shadow-[inset_0_2px_8px_rgba(255,255,255,0.14),0_16px_40px_rgba(0,0,0,0.6)] ring-[3px] ring-zinc-600/90">
-              <span className="h-[62%] w-[62%] rounded-full bg-[#020617] ring-1 ring-teal-500/40" />
-              <span className="pointer-events-none absolute inset-[16%] rounded-full border border-amber-500/30" />
+            <span className="hero-pointer-nudge inline-flex">
+              <MousePointer2 className="h-10 w-10 md:h-12 md:w-12" strokeWidth={2.5} />
             </span>
-          </button>
+          </div>
+
+          <div
+            className="pointer-events-none absolute left-[19.5%] top-[54%] z-[18] flex h-[min(52vw,280px)] w-[min(52vw,280px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+            aria-hidden
+          >
+            <span className="hero-watch-ring h-full w-full rounded-full border-4 border-amber-400/80" />
+          </div>
+
+          <div className="absolute left-[19.5%] top-[54%] z-20 -translate-x-1/2 -translate-y-1/2">
+            <button
+              ref={watchRef}
+              type="button"
+              onClick={onWatchClick}
+              className="group relative flex aspect-square w-[clamp(11.5rem,42vmin,19rem)] cursor-pointer items-center justify-center rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300"
+              aria-label="Abrir panel del reloj"
+              style={{
+                animation:
+                  'watch-glow 2.4s ease-in-out infinite, hero-watch-pulse 1.1s ease-in-out infinite',
+              }}
+            >
+            <span className="pointer-events-none absolute inset-[-14px] rounded-full border-4 border-amber-400/50" />
+            <span className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-300/50 via-orange-500/35 to-teal-400/40 blur-xl" />
+            <span className="relative flex h-[86%] w-[86%] flex-col items-center justify-center gap-1 rounded-full bg-gradient-to-b from-zinc-600 to-zinc-950 p-2 shadow-[inset_0_4px_12px_rgba(255,255,255,0.2),0_12px_0_#020617,0_20px_40px_rgba(0,0,0,0.65)] ring-4 ring-amber-400/90 ring-offset-4 ring-offset-[#1a1025]">
+              <span className="absolute top-2 text-[9px] font-black uppercase tracking-widest text-amber-200">
+                Pulsa
+              </span>
+              <span className="flex h-[58%] w-[58%] flex-col items-center justify-center rounded-full bg-[#020617] ring-2 ring-teal-400/80">
+                <Heart className="h-8 w-8 text-rose-400 md:h-10 md:w-10" strokeWidth={2.2} fill="#fb7185" />
+                <span className="mt-0.5 font-mono text-[10px] font-bold text-teal-300">142</span>
+              </span>
+              <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-400">Garmin</span>
+            </span>
+            </button>
+          </div>
+
+          <div
+            className="pointer-events-none absolute left-[19.5%] top-[78%] z-[21] w-[min(90%,280px)] -translate-x-1/2 text-center"
+            aria-hidden
+          >
+            <span className="inline-block rounded-full border-2 border-amber-400 bg-black/80 px-4 py-2 font-black uppercase tracking-wide text-amber-300 shadow-lg">
+              ¡Pulsa el reloj!
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center px-6">
+      <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-4">
         <p
-          className={`max-w-md text-center font-serif text-sm tracking-wide text-amber-100/85 md:text-base ${
+          className={`max-w-lg text-center font-mono text-xs font-bold uppercase tracking-wide text-amber-200 md:text-sm ${
             showCue ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
@@ -324,7 +355,7 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
             animation: showCue ? 'cue-fade 900ms ease-out forwards' : 'none',
           }}
         >
-          Tap the giant Garmin — your dashboard lives on your wrist.
+          El reloj enorme es el botón: ábrelo para ver el tablero.
         </p>
       </div>
     </div>
