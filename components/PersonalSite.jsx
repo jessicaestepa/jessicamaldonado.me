@@ -163,10 +163,11 @@ function WatchFace({
           <button
             type="button"
             onClick={onBackHero}
-            className="flex h-10 w-3 items-center justify-center rounded-full bg-gradient-to-b from-zinc-600 to-zinc-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60"
-            aria-label="Back to scene"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full bg-gradient-to-b from-zinc-600 to-zinc-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60"
+            aria-label="Volver al inicio"
+            title="Volver al inicio"
           >
-            <span className="h-6 w-[3px] rounded-full bg-zinc-800" />
+            <ArrowLeft className="h-4 w-4 text-zinc-200" strokeWidth={2} />
           </button>
           <button
             type="button"
@@ -518,6 +519,23 @@ export default function PersonalSite() {
   }, [phase, watchExpanded])
 
   useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return
+      if (activeSection) {
+        setActiveSection(null)
+        return
+      }
+      if (phase === 'dashboard') {
+        setPhase('hero')
+        setWatchFrom(null)
+        setWatchExpanded(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [activeSection, phase])
+
+  useEffect(() => {
     if (!soundOn) {
       if (oscRef.current) {
         try {
@@ -646,12 +664,25 @@ export default function PersonalSite() {
 
         {phase === 'dashboard' && watchFrom && !activeSection && (
           <div
-            className="fixed inset-0 z-40 flex items-center justify-center bg-black/55 backdrop-blur-[2px] transition-opacity"
+            role="presentation"
+            className="fixed inset-0 z-40 cursor-pointer bg-black/55 backdrop-blur-[2px] transition-opacity"
             style={{
               opacity: watchExpanded ? 1 : 0.55,
               transitionDuration: `${ZOOM_MS}ms`,
             }}
+            onClick={backToHero}
           />
+        )}
+
+        {phase === 'dashboard' && watchFrom && !activeSection && (
+          <button
+            type="button"
+            onClick={backToHero}
+            className="fixed left-4 top-[max(1rem,env(safe-area-inset-top))] z-[60] inline-flex items-center gap-2 rounded-full border border-white/15 bg-zinc-900/90 px-4 py-2.5 text-sm font-medium text-zinc-100 shadow-lg backdrop-blur-sm transition hover:border-amber-400/50 hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80"
+          >
+            <ArrowLeft className="h-4 w-4 shrink-0" strokeWidth={2} />
+            Volver al inicio
+          </button>
         )}
 
         {phase === 'dashboard' && watchFrom && !activeSection && (
