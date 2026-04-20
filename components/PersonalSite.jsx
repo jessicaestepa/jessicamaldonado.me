@@ -64,32 +64,34 @@ function GrainOverlay() {
   )
 }
 
-function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
+function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick, darkMode }) {
   const { x, y } = parallax
-  const runnerParallax = { transform: `translate3d(${x * 8}px, ${y * 4}px, 0)` }
+  const runnerParallax = { transform: `translate3d(${x * 10}px, ${y * 6}px, 0)` }
+
+  const shell =
+    darkMode === false
+      ? 'bg-gradient-to-b from-amber-50 via-slate-100 to-slate-200'
+      : 'bg-zinc-950'
 
   return (
     <div
-      className="relative flex h-[min(82vh,680px)] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-b from-white via-slate-50/95 to-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.1)]"
+      className={`relative min-h-svh w-screen max-w-[100vw] overflow-hidden ${shell}`}
+      style={{ marginLeft: 'calc(50% - 50vw)', marginRight: 'calc(50% - 50vw)' }}
       onMouseMove={onMove}
       role="presentation"
     >
       <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 85% 55% at 50% 35%, rgba(251, 191, 36, 0.07), transparent 55%)',
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_40%,rgba(251,191,36,0.12),transparent_55%),radial-gradient(ellipse_80%_50%_at_50%_100%,rgba(45,212,191,0.08),transparent_50%)]"
         aria-hidden
       />
 
       <div
-        className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center px-4 py-10"
-        style={{ ...runnerParallax, transition: 'transform 100ms linear' }}
+        className="absolute inset-0 flex items-stretch justify-center"
+        style={{ ...runnerParallax, transition: 'transform 120ms linear' }}
       >
-        <div className="hero-runner-bob flex w-full max-w-lg flex-col items-center">
+        <div className="hero-runner-bob relative h-full min-h-svh w-full">
           <div
-            className="relative z-0 h-[min(48vh,420px)] w-full max-w-[min(100%,380px)] overflow-hidden rounded-xl bg-white shadow-inner ring-1 ring-neutral-200/90"
+            className="absolute inset-0 min-h-svh w-full"
             role="img"
             aria-label="Animación: chica corriendo"
           >
@@ -97,39 +99,52 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick }) {
               src="/lottie/girl-running.lottie"
               loop
               autoplay
-              layout={{ fit: 'contain', align: [0.5, 0.5] }}
-              className="h-full w-full"
+              layout={{ fit: 'cover', align: [0.5, 0.55] }}
+              className="h-full min-h-svh w-full [&_canvas]:!h-full [&_canvas]:!w-full"
             />
-          </div>
-
-          <div className="mt-8 flex flex-col items-center gap-2">
-            <ArrowDown
-              className="h-7 w-7 text-neutral-400 motion-safe:animate-bounce"
-              strokeWidth={2.5}
-              aria-hidden
-            />
-            <button
-              ref={watchRef}
-              type="button"
-              onClick={onWatchClick}
-              className="rounded-full bg-neutral-900 px-8 py-2.5 text-sm font-semibold tracking-wide text-white shadow-md transition hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100"
-              aria-label="Click here to open your dashboard"
-            >
-              Click here
-            </button>
           </div>
         </div>
       </div>
 
-      <div className="pointer-events-none px-4 pb-5 text-center">
-        <p
-          className={`text-xs text-neutral-500 ${showCue ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}
-          style={{
-            animation: showCue ? 'cue-fade 900ms ease-out forwards' : 'none',
-          }}
-        >
-          Use the button above to open your watch dashboard.
-        </p>
+      <div
+        className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center bg-gradient-to-t pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-32 ${
+          darkMode === false
+            ? 'from-slate-200 via-slate-200/90 to-transparent'
+            : 'from-zinc-950 via-zinc-950/85 to-transparent'
+        }`}
+      >
+        <div className="pointer-events-auto flex flex-col items-center gap-3 px-4">
+          <ArrowDown
+            className={`h-8 w-8 motion-safe:animate-bounce ${
+              darkMode === false ? 'text-amber-700' : 'text-amber-200/90'
+            }`}
+            strokeWidth={2.5}
+            aria-hidden
+          />
+          <button
+            ref={watchRef}
+            type="button"
+            onClick={onWatchClick}
+            className={`rounded-full px-10 py-3 text-sm font-semibold tracking-wide shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+              darkMode === false
+                ? 'bg-zinc-900 text-amber-50 shadow-zinc-900/20 hover:bg-zinc-800 focus-visible:ring-zinc-500 focus-visible:ring-offset-amber-50'
+                : 'bg-amber-500 text-zinc-950 shadow-amber-500/25 hover:bg-amber-400 focus-visible:ring-amber-300 focus-visible:ring-offset-zinc-950'
+            }`}
+            aria-label="Abrir el tablero"
+          >
+            Click here
+          </button>
+          <p
+            className={`max-w-md text-center text-xs ${
+              darkMode === false ? 'text-zinc-600' : 'text-zinc-400'
+            } ${showCue ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}
+            style={{
+              animation: showCue ? 'cue-fade 900ms ease-out forwards' : 'none',
+            }}
+          >
+            Usa el botón para abrir el tablero tipo reloj.
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -634,10 +649,10 @@ export default function PersonalSite() {
       />
       <GrainOverlay />
 
-      <div className="relative z-10 mx-auto flex min-h-svh max-w-6xl flex-col items-center px-4 pb-10 pt-8 md:px-8">
-        <header className="mb-6 w-full max-w-5xl text-left">
+      <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-full flex-col">
+        <header className="pointer-events-none absolute inset-x-0 top-0 z-30 px-4 pt-8 text-left md:px-8">
           <h1
-            className={`font-serif text-2xl font-semibold tracking-tight md:text-3xl ${
+            className={`pointer-events-auto font-serif text-2xl font-semibold tracking-tight drop-shadow-md md:text-3xl ${
               darkMode ? 'text-zinc-100' : 'text-zinc-900'
             }`}
           >
@@ -646,7 +661,7 @@ export default function PersonalSite() {
         </header>
 
         <div
-          className={`relative w-full transition-[filter,opacity,transform] ${
+          className={`relative w-full flex-1 transition-[filter,opacity,transform] ${
             phase !== 'hero'
               ? 'pointer-events-none blur-[14px] opacity-0 scale-[1.03]'
               : 'opacity-100'
@@ -659,6 +674,7 @@ export default function PersonalSite() {
             showCue={showCue}
             watchRef={watchRef}
             onWatchClick={openWatch}
+            darkMode={darkMode}
           />
         </div>
 
