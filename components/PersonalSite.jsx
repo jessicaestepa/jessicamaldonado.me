@@ -8,15 +8,20 @@ import {
   Calendar,
   Heart,
   MapPin,
+  Moon,
   Mountain,
   Settings,
+  Sun,
   Timer,
+  Volume2,
+  VolumeX,
 } from 'lucide-react'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { site } from '@/lib/site'
 
 const ZOOM_MS = 900
 const ZOOM_EASE = 'cubic-bezier(0.34, 1.35, 0.64, 1)'
+const WATCH_EXPANDED_SIZE = 'min(94vmin, min(92vw, 720px))'
 
 const SECTIONS = {
   about: {
@@ -198,80 +203,100 @@ function WatchFace({
     : 'bg-zinc-200 text-zinc-900'
 
   return (
-    <div className="relative flex items-center justify-center px-6 py-2 sm:px-10">
-      <div
-        className="absolute left-0 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2 sm:left-1"
-        aria-label="Botones físicos Garmin"
-      >
-        <GarminButton onClick={onBackHero} label="Volver al inicio" className="h-11 w-3 sm:h-12 sm:w-3.5">
-          <ArrowLeft className="h-3.5 w-3.5 text-zinc-200" strokeWidth={2.5} />
-        </GarminButton>
-        <GarminButton onClick={onToggleDark} label="Cambiar tema" className="h-14 w-3 sm:h-16 sm:w-3.5" />
-        <GarminButton
-          onClick={onToggleSound}
-          label="Sonido ambiente"
-          active={soundOn}
-          className="h-11 w-3 sm:h-12 sm:w-3.5"
-        />
-        <div className="h-9 w-3 rounded-md bg-gradient-to-b from-zinc-600 to-zinc-900 opacity-60 ring-1 ring-black/50 sm:h-10 sm:w-3.5" aria-hidden />
-        <div className="h-11 w-3 rounded-md bg-gradient-to-b from-zinc-600 to-zinc-900 opacity-80 ring-1 ring-black/50 sm:h-12 sm:w-3.5" aria-hidden />
-      </div>
-
-      <div
-        className="relative aspect-square w-[min(78vmin,440px)] max-w-[92vw] rounded-full bg-gradient-to-br from-zinc-600 via-zinc-800 to-zinc-950 p-[3px] shadow-[0_32px_90px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-orange-600/25"
-        role="img"
-        aria-label="Pantalla circular estilo Garmin"
-      >
-        <div className="h-full w-full rounded-full bg-gradient-to-b from-zinc-700 to-zinc-950 p-[10px] ring-1 ring-zinc-500/40">
-          <div
-            className={`relative flex h-full w-full flex-col overflow-hidden rounded-full ring-2 ring-inset ${darkMode ? 'ring-zinc-800' : 'ring-zinc-400'} ${screen}`}
+    <div className="relative flex w-full items-center justify-center p-2 sm:p-4">
+      <div className="relative aspect-square w-[min(94vmin,min(92vw,720px))]">
+        <div
+          className="absolute -left-2 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2.5 sm:-left-3 md:-left-4"
+          aria-label="Botones del reloj: volver, tema y sonido"
+        >
+          <GarminButton
+            onClick={onBackHero}
+            label="Volver al inicio"
+            className="h-12 w-3.5 sm:h-14 sm:w-4"
           >
+            <ArrowLeft className="h-4 w-4 text-zinc-200" strokeWidth={2.5} />
+          </GarminButton>
+          <GarminButton
+            onClick={onToggleDark}
+            label={darkMode ? 'Modo claro' : 'Modo oscuro'}
+            className="h-14 w-3.5 sm:h-16 sm:w-4"
+          >
+            {darkMode ? (
+              <Sun className="h-3.5 w-3.5 text-amber-300" strokeWidth={2} />
+            ) : (
+              <Moon className="h-3.5 w-3.5 text-zinc-300" strokeWidth={2} />
+            )}
+          </GarminButton>
+          <GarminButton
+            onClick={onToggleSound}
+            label={soundOn ? 'Apagar sonido' : 'Activar sonido'}
+            active={soundOn}
+            className="h-12 w-3.5 sm:h-14 sm:w-4"
+          >
+            {soundOn ? (
+              <Volume2 className="h-3.5 w-3.5 text-orange-400" strokeWidth={2} />
+            ) : (
+              <VolumeX className="h-3.5 w-3.5 text-zinc-400" strokeWidth={2} />
+            )}
+          </GarminButton>
+        </div>
+
+        <div
+          className="relative h-full w-full rounded-full bg-gradient-to-br from-zinc-600 via-zinc-800 to-zinc-950 p-[3px] shadow-[0_32px_90px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-orange-600/25"
+          role="img"
+          aria-label="Pantalla circular estilo Garmin"
+        >
+          <div className="h-full w-full rounded-full bg-gradient-to-b from-zinc-700 to-zinc-950 p-[10px] ring-1 ring-zinc-500/40">
             <div
-              className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_18%,rgba(251,146,60,0.14),transparent_42%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.35),transparent_55%)]"
-              aria-hidden
-            />
-            <div className="relative z-10 shrink-0 border-b border-orange-500/20 px-3 pb-1.5 pt-3 text-center">
-              <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.45em] text-orange-500">
-                Menú
-              </p>
-              <p className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.2em] text-zinc-500">
-                {clock || '--:--'}
+              className={`relative flex h-full w-full flex-col overflow-hidden rounded-full ring-2 ring-inset ${darkMode ? 'ring-zinc-800' : 'ring-zinc-400'} ${screen}`}
+            >
+              <div
+                className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_18%,rgba(251,146,60,0.14),transparent_42%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.35),transparent_55%)]"
+                aria-hidden
+              />
+              <div className="relative z-10 shrink-0 border-b border-orange-500/20 px-4 pb-2 pt-4 text-center sm:pt-5">
+                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.45em] text-orange-500 sm:text-xs">
+                  Menú
+                </p>
+                <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-500 sm:text-[10px]">
+                  {clock || '--:--'}
+                </p>
+              </div>
+              <div className="relative z-10 grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-2 px-3 pb-9 pt-2 sm:gap-2.5 sm:px-4 sm:pb-10">
+                {zones.map((z) => {
+                  const meta = SECTIONS[z.id]
+                  const Icon = meta.icon
+                  return (
+                    <button
+                      key={z.id}
+                      type="button"
+                      onClick={() => onZone(z.id)}
+                      className={`group flex flex-col items-center justify-center gap-1.5 rounded-md border bg-zinc-900/70 px-1.5 py-2.5 text-center transition hover:border-orange-500/50 hover:bg-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/70 sm:py-3 ${z.accent} ${z.row} ${darkMode ? '' : 'bg-white/80'}`}
+                    >
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-sm bg-black/40 text-orange-400 ring-1 ring-orange-500/20 transition group-hover:text-orange-300 sm:h-9 sm:w-9">
+                        {z.id === 'contact' ? (
+                          <>
+                            <Battery className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2} />
+                            <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2} />
+                          </>
+                        ) : (
+                          <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2} />
+                        )}
+                      </span>
+                      <p className="font-mono text-[10px] font-semibold uppercase leading-tight tracking-wide text-zinc-100 sm:text-xs">
+                        {meta.title}
+                      </p>
+                      <p className="font-mono text-[8px] uppercase tracking-wider text-orange-500/70 opacity-80 sm:text-[9px]">
+                        {z.id === 'contact' ? 'Ajustes' : 'Campo'}
+                      </p>
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 font-mono text-[8px] font-semibold uppercase tracking-[0.55em] text-zinc-600 sm:text-[9px]">
+                Garmin
               </p>
             </div>
-            <div className="relative z-10 grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-1.5 px-2.5 pb-7 pt-1 sm:gap-2 sm:px-3 sm:pb-8">
-              {zones.map((z) => {
-                const meta = SECTIONS[z.id]
-                const Icon = meta.icon
-                return (
-                  <button
-                    key={z.id}
-                    type="button"
-                    onClick={() => onZone(z.id)}
-                    className={`group flex flex-col items-center justify-center gap-1 rounded-md border bg-zinc-900/70 px-1 py-2 text-center transition hover:border-orange-500/50 hover:bg-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/70 sm:py-2.5 ${z.accent} ${z.row} ${darkMode ? '' : 'bg-white/80'}`}
-                  >
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm bg-black/40 text-orange-400 ring-1 ring-orange-500/20 transition group-hover:text-orange-300">
-                      {z.id === 'contact' ? (
-                        <>
-                          <Battery className="h-3 w-3" strokeWidth={2} />
-                          <Settings className="h-3 w-3" strokeWidth={2} />
-                        </>
-                      ) : (
-                        <Icon className="h-3.5 w-3.5" strokeWidth={2} />
-                      )}
-                    </span>
-                    <p className="font-mono text-[9px] font-semibold uppercase leading-tight tracking-wide text-zinc-100 sm:text-[10px]">
-                      {meta.title}
-                    </p>
-                    <p className="font-mono text-[7px] uppercase tracking-wider text-orange-500/70 opacity-80">
-                      {z.id === 'contact' ? 'Ajustes' : 'Campo'}
-                    </p>
-                  </button>
-                )
-              })}
-            </div>
-            <p className="pointer-events-none absolute bottom-2 left-1/2 z-10 -translate-x-1/2 font-mono text-[7px] font-semibold uppercase tracking-[0.55em] text-zinc-600">
-              Garmin
-            </p>
           </div>
         </div>
       </div>
@@ -656,7 +681,7 @@ export default function PersonalSite() {
     ? 'bg-zinc-950 text-zinc-100'
     : 'bg-amber-50 text-zinc-900'
 
-  const target = 'min(70vmin, 92vw)'
+  const target = WATCH_EXPANDED_SIZE
 
   return (
     <div className={`relative min-h-svh overflow-x-hidden ${shellBg}`}>
