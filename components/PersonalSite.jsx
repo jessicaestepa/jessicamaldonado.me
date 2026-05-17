@@ -150,6 +150,20 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick, darkMode
   )
 }
 
+function GarminButton({ className = '', onClick, label, active = false, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className={`flex items-center justify-center rounded-md bg-gradient-to-b from-zinc-500 via-zinc-700 to-zinc-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_2px_6px_rgba(0,0,0,0.45)] ring-1 ring-black/70 transition hover:from-zinc-400 hover:via-zinc-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/80 ${active ? 'ring-orange-500/60' : ''} ${className}`}
+    >
+      {children}
+    </button>
+  )
+}
+
 function WatchFace({
   darkMode,
   onZone,
@@ -158,56 +172,73 @@ function WatchFace({
   onToggleSound,
   soundOn,
 }) {
+  const [clock, setClock] = useState('')
+
+  useEffect(() => {
+    const tick = () =>
+      setClock(
+        new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+      )
+    tick()
+    const id = setInterval(tick, 30_000)
+    return () => clearInterval(id)
+  }, [])
+
   const zones = [
-    { id: 'about', row: 'row-start-1 col-start-1', accent: 'from-rose-500/25 to-amber-500/10' },
-    { id: 'projects', row: 'row-start-1 col-start-2', accent: 'from-teal-500/25 to-cyan-500/10' },
-    { id: 'now', row: 'row-start-2 col-start-1', accent: 'from-amber-500/25 to-orange-500/10' },
-    { id: 'journey', row: 'row-start-2 col-start-2', accent: 'from-emerald-500/20 to-teal-500/10' },
-    { id: 'writing', row: 'row-start-3 col-start-1', accent: 'from-indigo-500/25 to-teal-500/10' },
-    { id: 'contact', row: 'row-start-3 col-start-2', accent: 'from-zinc-500/30 to-amber-500/10' },
+    { id: 'about', row: 'row-start-1 col-start-1', accent: 'border-rose-500/25 bg-rose-950/40' },
+    { id: 'projects', row: 'row-start-1 col-start-2', accent: 'border-cyan-500/25 bg-cyan-950/35' },
+    { id: 'now', row: 'row-start-2 col-start-1', accent: 'border-orange-500/35 bg-orange-950/35' },
+    { id: 'journey', row: 'row-start-2 col-start-2', accent: 'border-emerald-500/25 bg-emerald-950/35' },
+    { id: 'writing', row: 'row-start-3 col-start-1', accent: 'border-indigo-500/25 bg-indigo-950/35' },
+    { id: 'contact', row: 'row-start-3 col-start-2', accent: 'border-zinc-400/20 bg-zinc-900/50' },
   ]
 
-  const shell = darkMode
-    ? 'bg-zinc-950 text-zinc-100 border-zinc-800'
-    : 'bg-amber-50 text-zinc-900 border-amber-200/70'
+  const screen = darkMode
+    ? 'bg-zinc-950 text-zinc-100'
+    : 'bg-zinc-200 text-zinc-900'
 
   return (
-    <div className="relative flex items-center justify-center px-[clamp(0.25rem,2vw,1.25rem)]">
-      <div className="relative flex items-stretch gap-1 md:gap-2">
-        <div className="flex flex-col items-center justify-between py-10">
-          <button
-            type="button"
-            onClick={onBackHero}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-full bg-gradient-to-b from-zinc-600 to-zinc-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60"
-            aria-label="Volver al inicio"
-            title="Volver al inicio"
-          >
-            <ArrowLeft className="h-4 w-4 text-zinc-200" strokeWidth={2} />
-          </button>
-          <button
-            type="button"
-            onClick={onToggleDark}
-            className="flex h-14 w-3 items-center justify-center rounded-full bg-gradient-to-b from-zinc-500 to-zinc-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-black/60"
-            aria-label="Toggle theme"
-          />
-          <button
-            type="button"
-            onClick={onToggleSound}
-            className={`flex h-10 w-3 items-center justify-center rounded-full bg-gradient-to-b from-teal-700 to-zinc-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-black/60 ${
-              soundOn ? 'ring-teal-400/50' : ''
-            }`}
-            aria-label="Ambient sound"
-          />
-        </div>
+    <div className="relative flex items-center justify-center px-6 py-2 sm:px-10">
+      <div
+        className="absolute left-0 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2 sm:left-1"
+        aria-label="Botones físicos Garmin"
+      >
+        <GarminButton onClick={onBackHero} label="Volver al inicio" className="h-11 w-3 sm:h-12 sm:w-3.5">
+          <ArrowLeft className="h-3.5 w-3.5 text-zinc-200" strokeWidth={2.5} />
+        </GarminButton>
+        <GarminButton onClick={onToggleDark} label="Cambiar tema" className="h-14 w-3 sm:h-16 sm:w-3.5" />
+        <GarminButton
+          onClick={onToggleSound}
+          label="Sonido ambiente"
+          active={soundOn}
+          className="h-11 w-3 sm:h-12 sm:w-3.5"
+        />
+        <div className="h-9 w-3 rounded-md bg-gradient-to-b from-zinc-600 to-zinc-900 opacity-60 ring-1 ring-black/50 sm:h-10 sm:w-3.5" aria-hidden />
+        <div className="h-11 w-3 rounded-md bg-gradient-to-b from-zinc-600 to-zinc-900 opacity-80 ring-1 ring-black/50 sm:h-12 sm:w-3.5" aria-hidden />
+      </div>
 
-        <div
-          className={`relative aspect-square w-[min(72vmin,92vw)] rounded-[28%] border-[10px] border-zinc-950 bg-gradient-to-b from-zinc-800 via-zinc-950 to-black p-[10px] shadow-[0_50px_120px_rgba(0,0,0,0.65),inset_0_2px_0_rgba(255,255,255,0.06)] ring-1 ring-zinc-700/60`}
-        >
+      <div
+        className="relative aspect-square w-[min(78vmin,440px)] max-w-[92vw] rounded-full bg-gradient-to-br from-zinc-600 via-zinc-800 to-zinc-950 p-[3px] shadow-[0_32px_90px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-orange-600/25"
+        role="img"
+        aria-label="Pantalla circular estilo Garmin"
+      >
+        <div className="h-full w-full rounded-full bg-gradient-to-b from-zinc-700 to-zinc-950 p-[10px] ring-1 ring-zinc-500/40">
           <div
-            className={`relative h-full w-full overflow-hidden rounded-[22%] border border-black/60 ${shell}`}
+            className={`relative flex h-full w-full flex-col overflow-hidden rounded-full ring-2 ring-inset ${darkMode ? 'ring-zinc-800' : 'ring-zinc-400'} ${screen}`}
           >
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_15%,rgba(251,191,36,0.12),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(45,212,191,0.12),transparent_40%)]" />
-            <div className="relative grid h-full w-full grid-cols-2 grid-rows-3 gap-2 p-3 md:p-4">
+            <div
+              className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_18%,rgba(251,146,60,0.14),transparent_42%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.35),transparent_55%)]"
+              aria-hidden
+            />
+            <div className="relative z-10 shrink-0 border-b border-orange-500/20 px-3 pb-1.5 pt-3 text-center">
+              <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.45em] text-orange-500">
+                Menú
+              </p>
+              <p className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.2em] text-zinc-500">
+                {clock || '--:--'}
+              </p>
+            </div>
+            <div className="relative z-10 grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-1.5 px-2.5 pb-7 pt-1 sm:gap-2 sm:px-3 sm:pb-8">
               {zones.map((z) => {
                 const meta = SECTIONS[z.id]
                 const Icon = meta.icon
@@ -216,46 +247,32 @@ function WatchFace({
                     key={z.id}
                     type="button"
                     onClick={() => onZone(z.id)}
-                    className={`group relative flex flex-col items-start justify-between overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br p-3 text-left shadow-inner transition ${z.accent} hover:border-amber-400/40 hover:shadow-[0_0_24px_rgba(251,191,36,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:p-4 ${z.row}`}
+                    className={`group flex flex-col items-center justify-center gap-1 rounded-md border bg-zinc-900/70 px-1 py-2 text-center transition hover:border-orange-500/50 hover:bg-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/70 sm:py-2.5 ${z.accent} ${z.row} ${darkMode ? '' : 'bg-white/80'}`}
                   >
-                    <div className="flex w-full items-start justify-between gap-2">
-                      <span className="inline-flex h-9 w-9 items-center justify-center gap-0.5 rounded-xl bg-black/30 text-amber-300/90 ring-1 ring-white/10 transition group-hover:text-teal-200">
-                        {z.id === 'contact' ? (
-                          <>
-                            <Battery className="h-3.5 w-3.5" strokeWidth={2} />
-                            <Settings className="h-3.5 w-3.5" strokeWidth={2} />
-                          </>
-                        ) : (
-                          <Icon className="h-4 w-4" strokeWidth={2} />
-                        )}
-                      </span>
-                      <span className="hidden rounded-full bg-black/35 px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-amber-100/80 opacity-0 ring-1 ring-white/10 transition group-hover:opacity-100 md:inline">
-                        {meta.tooltip}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="font-serif text-sm tracking-wide text-zinc-100 md:text-base">
-                        {meta.title}
-                      </p>
-                      <p className="mt-1 font-mono text-[10px] text-zinc-400 md:text-[11px]">
-                        {z.id === 'contact' ? 'Battery · Settings' : 'Data field'}
-                      </p>
-                    </div>
-                    <span className="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100">
-                      <span className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent" />
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm bg-black/40 text-orange-400 ring-1 ring-orange-500/20 transition group-hover:text-orange-300">
+                      {z.id === 'contact' ? (
+                        <>
+                          <Battery className="h-3 w-3" strokeWidth={2} />
+                          <Settings className="h-3 w-3" strokeWidth={2} />
+                        </>
+                      ) : (
+                        <Icon className="h-3.5 w-3.5" strokeWidth={2} />
+                      )}
                     </span>
+                    <p className="font-mono text-[9px] font-semibold uppercase leading-tight tracking-wide text-zinc-100 sm:text-[10px]">
+                      {meta.title}
+                    </p>
+                    <p className="font-mono text-[7px] uppercase tracking-wider text-orange-500/70 opacity-80">
+                      {z.id === 'contact' ? 'Ajustes' : 'Campo'}
+                    </p>
                   </button>
                 )
               })}
             </div>
-            <div className="pointer-events-none absolute left-1/2 top-2 h-2 w-16 -translate-x-1/2 rounded-full bg-black/70 ring-1 ring-white/10" />
+            <p className="pointer-events-none absolute bottom-2 left-1/2 z-10 -translate-x-1/2 font-mono text-[7px] font-semibold uppercase tracking-[0.55em] text-zinc-600">
+              Garmin
+            </p>
           </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-between py-10">
-          <div className="h-10 w-3 rounded-full bg-gradient-to-b from-zinc-600 to-zinc-900 opacity-70 ring-1 ring-black/60" />
-          <div className="h-14 w-3 rounded-full bg-gradient-to-b from-zinc-500 to-zinc-900 opacity-70 ring-1 ring-black/60" />
-          <div className="h-10 w-3 rounded-full bg-gradient-to-b from-zinc-600 to-zinc-900 opacity-70 ring-1 ring-black/60" />
         </div>
       </div>
     </div>
@@ -272,27 +289,27 @@ function SectionPanel({ id, darkMode, onBack }) {
 
   return (
     <div
-      className={`section-dive relative mx-auto flex h-[min(78vh,760px)] w-[min(92vw,980px)] flex-col overflow-hidden rounded-[2.2rem] border shadow-[0_40px_120px_rgba(0,0,0,0.45)] backdrop-blur-md ${panel}`}
+      className={`section-dive relative mx-auto flex h-[min(78vh,760px)] w-[min(92vw,980px)] flex-col overflow-hidden rounded-3xl border shadow-[0_40px_120px_rgba(0,0,0,0.45)] backdrop-blur-md ${panel}`}
     >
-      <div className="pointer-events-none absolute inset-0 rounded-[2.2rem] ring-[10px] ring-black/70 ring-inset" />
-      <div className="pointer-events-none absolute inset-3 rounded-[1.7rem] ring-1 ring-teal-500/15" />
+      <div className="pointer-events-none absolute inset-0 rounded-3xl ring-4 ring-zinc-900/90 ring-inset" />
+      <div className="pointer-events-none absolute inset-2 rounded-2xl ring-1 ring-orange-500/25" />
 
-      <header className="relative z-10 flex items-center justify-between gap-3 border-b border-white/5 px-5 py-4 md:px-8">
+      <header className="relative z-10 flex items-center justify-between gap-3 border-b border-orange-500/15 px-5 py-4 md:px-8">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-teal-400/90">
-            Garmin view
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-orange-500/90">
+            Pantalla Garmin
           </p>
-          <h2 className="font-serif text-2xl tracking-tight text-amber-100 md:text-3xl">
+          <h2 className="font-mono text-xl font-semibold uppercase tracking-wide text-zinc-100 md:text-2xl">
             {meta.title}
           </h2>
         </div>
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-amber-100/90 shadow-inner transition hover:border-amber-400/40 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70"
+          className="inline-flex items-center gap-2 rounded-md border border-orange-500/25 bg-zinc-900/60 px-3 py-2 font-mono text-xs uppercase tracking-wide text-orange-100/90 shadow-inner transition hover:border-orange-400/50 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/70"
         >
           <ArrowLeft className="h-4 w-4" strokeWidth={2} />
-          <span className="hidden sm:inline">Back</span>
+          <span className="hidden sm:inline">Volver</span>
         </button>
       </header>
 
