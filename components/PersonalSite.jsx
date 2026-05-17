@@ -21,7 +21,7 @@ import { site } from '@/lib/site'
 
 const ZOOM_MS = 900
 const ZOOM_EASE = 'cubic-bezier(0.34, 1.35, 0.64, 1)'
-const WATCH_EXPANDED_SIZE = 'min(94vmin, min(92vw, 720px))'
+const WATCH_EXPANDED_SIZE = 'min(98vmin, min(98vw, 1100px))'
 
 const SECTIONS = {
   about: {
@@ -203,10 +203,10 @@ function WatchFace({
     : 'bg-zinc-200 text-zinc-900'
 
   return (
-    <div className="relative flex w-full items-center justify-center p-2 sm:p-4">
-      <div className="relative aspect-square w-[min(94vmin,min(92vw,720px))]">
+    <div className="relative flex w-full items-center justify-center p-0">
+      <div className="relative aspect-square w-[min(98vmin,min(98vw,1100px))]">
         <div
-          className="absolute -left-2 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2.5 sm:-left-3 md:-left-4"
+          className="absolute -left-2 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2.5 sm:-left-3 md:-left-5 lg:-left-6"
           aria-label="Botones del reloj: volver, tema y sonido"
         >
           <GarminButton
