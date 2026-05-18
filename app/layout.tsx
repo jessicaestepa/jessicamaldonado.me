@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: site.name,
     template: `%s | ${site.name}`,
   },
-  description: `Sitio personal de ${site.name}. Proyectos, notas y contacto.`,
+  description: site.shortDescription,
   keywords: [
     site.name,
     'Jessica Maldonado',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     url: site.url,
     siteName: site.name,
     title: site.name,
-    description: `Sitio personal de ${site.name}. Proyectos, experiencia y contacto.`,
+    description: site.shortDescription,
     images: [
       {
         url: '/opengraph-image',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: site.name,
-    description: `Sitio personal de ${site.name}.`,
+    description: site.shortDescription,
     images: ['/opengraph-image'],
     creator: site.social.twitterHandle,
   },
