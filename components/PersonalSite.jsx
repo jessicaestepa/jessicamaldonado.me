@@ -171,12 +171,18 @@ function GarminButton({ className = '', onClick, label, active = false, children
 
 function SectionBody({ id, compact = false }) {
   const text = compact
-    ? 'font-mono text-[10px] leading-relaxed text-zinc-300 sm:text-[11px]'
+    ? 'w-full min-w-0 max-w-full break-words font-mono text-[10px] leading-relaxed text-zinc-300 [overflow-wrap:anywhere] sm:text-[11px]'
     : 'font-mono text-sm leading-relaxed text-zinc-300'
 
   if (id === 'about') {
     return (
-      <article className={compact ? 'space-y-3' : 'max-w-3xl space-y-4'}>
+      <article
+        className={
+          compact
+            ? 'mx-auto w-full min-w-0 max-w-full space-y-3 break-words [overflow-wrap:anywhere]'
+            : 'max-w-3xl space-y-4'
+        }
+      >
         {site.about.paragraphs.map((paragraph, i) => (
           <p key={i} className={text}>
             {paragraph}
@@ -303,7 +309,7 @@ function WatchFace({
         >
           <div className="h-full w-full rounded-full bg-gradient-to-b from-zinc-700 to-zinc-950 p-[10px] ring-1 ring-zinc-500/40">
             <div
-              className={`relative flex h-full w-full flex-col overflow-hidden rounded-full ring-2 ring-inset ${darkMode ? 'ring-zinc-800' : 'ring-zinc-400'} ${screen}`}
+              className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-full ring-2 ring-inset ${darkMode ? 'ring-zinc-800' : 'ring-zinc-400'} ${screen}`}
             >
               <div
                 className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_18%,rgba(251,146,60,0.14),transparent_42%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.35),transparent_55%)]"
@@ -311,7 +317,7 @@ function WatchFace({
               />
               {activeSection ? (
                 <>
-                  <div className="relative z-10 flex shrink-0 items-center justify-between gap-2 border-b border-orange-500/20 px-3 py-2.5 sm:px-4">
+                  <div className="relative z-10 flex shrink-0 items-center justify-between gap-1 border-b border-orange-500/20 px-[12%] py-2.5">
                     <button
                       type="button"
                       onClick={onBackToMenu}
@@ -320,12 +326,12 @@ function WatchFace({
                       <ArrowLeft className="h-3 w-3" strokeWidth={2} />
                       Menú
                     </button>
-                    <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-orange-500 sm:text-[10px]">
+                    <p className="min-w-0 truncate px-1 text-center font-mono text-[9px] font-semibold uppercase tracking-wide text-orange-500 sm:text-[10px]">
                       {SECTIONS[activeSection].title}
                     </p>
-                    <span className="w-[52px]" aria-hidden />
+                    <span className="w-12 shrink-0" aria-hidden />
                   </div>
-                  <div className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-10 pt-2 sm:px-4">
+                  <div className="watch-screen-scroll relative z-10 mx-auto min-h-0 w-full min-w-0 max-w-full flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-[14%] pb-14 pt-3 sm:px-[16%]">
                     <SectionBody id={activeSection} compact />
                   </div>
                 </>
