@@ -56,6 +56,17 @@ const SECTIONS = {
   },
 }
 
+const BAND_ORDER = ['about', 'projects', 'now', 'journey', 'writing', 'contact']
+
+const BAND_ACCENTS = {
+  about: 'border-l-orange-500/80 bg-orange-500/[0.07]',
+  projects: 'border-l-cyan-500/80 bg-cyan-500/[0.07]',
+  now: 'border-l-amber-500/80 bg-amber-500/[0.07]',
+  journey: 'border-l-emerald-500/80 bg-emerald-500/[0.07]',
+  writing: 'border-l-indigo-500/80 bg-indigo-500/[0.07]',
+  contact: 'border-l-zinc-400/80 bg-zinc-500/[0.07]',
+}
+
 function GrainOverlay() {
   return (
     <div
@@ -230,15 +241,14 @@ function SectionBody({ id, compact = false }) {
 
 function WatchFace({
   darkMode,
-  activeSection,
-  onZone,
-  onBackToMenu,
   onBackHero,
   onToggleDark,
   onToggleSound,
   soundOn,
 }) {
   const [clock, setClock] = useState('')
+  const [bandIndex, setBandIndex] = useState(0)
+  const bandsRef = useRef(null)
 
   useEffect(() => {
     const tick = () =>
@@ -250,14 +260,21 @@ function WatchFace({
     return () => clearInterval(id)
   }, [])
 
-  const zones = [
-    { id: 'about', row: 'row-start-1 col-start-1', accent: 'border-rose-500/25 bg-rose-950/40' },
-    { id: 'projects', row: 'row-start-1 col-start-2', accent: 'border-cyan-500/25 bg-cyan-950/35' },
-    { id: 'now', row: 'row-start-2 col-start-1', accent: 'border-orange-500/35 bg-orange-950/35' },
-    { id: 'journey', row: 'row-start-2 col-start-2', accent: 'border-emerald-500/25 bg-emerald-950/35' },
-    { id: 'writing', row: 'row-start-3 col-start-1', accent: 'border-indigo-500/25 bg-indigo-950/35' },
-    { id: 'contact', row: 'row-start-3 col-start-2', accent: 'border-zinc-400/20 bg-zinc-900/50' },
-  ]
+  useEffect(() => {
+    const el = bandsRef.current
+    if (!el) return
+
+    const onScroll = () => {
+      const h = el.clientHeight
+      if (h <= 0) return
+      const index = Math.max(0, Math.min(BAND_ORDER.length - 1, Math.round(el.scrollTop / h)))
+      setBandIndex(index)
+    }
+
+    onScroll()
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
 
   const screen = darkMode
     ? 'bg-zinc-950 text-zinc-100'
@@ -267,12 +284,12 @@ function WatchFace({
     <div className="relative flex w-full items-center justify-center p-2 sm:p-4">
       <div className="relative aspect-square w-[min(98vmin,min(98vw,1100px))]">
         <div
-          className="absolute -left-2 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2.5 sm:-left-3 md:-left-4"
+          className="absolute -left-2 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2.5 sm:-left-3 md:-left-5 lg:-left-6"
           aria-label="Botones del reloj: volver, tema y sonido"
         >
           <GarminButton
-            onClick={activeSection ? onBackToMenu : onBackHero}
-            label={activeSection ? 'Volver al menú' : 'Volver al inicio'}
+            onClick={onBackHero}
+            label="Volver al inicio"
             className="h-12 w-3.5 sm:h-14 sm:w-4"
           >
             <ArrowLeft className="h-4 w-4 text-zinc-200" strokeWidth={2.5} />
@@ -315,72 +332,84 @@ function WatchFace({
                 className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_18%,rgba(251,146,60,0.14),transparent_42%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.35),transparent_55%)]"
                 aria-hidden
               />
-              {activeSection ? (
-                <>
-                  <div className="relative z-10 flex shrink-0 items-center justify-between gap-1 border-b border-orange-500/20 px-[12%] py-2.5">
-                    <button
-                      type="button"
-                      onClick={onBackToMenu}
-                      className="inline-flex items-center gap-1 rounded-md border border-orange-500/25 bg-black/40 px-2 py-1 font-mono text-[9px] uppercase tracking-wide text-orange-100/90 transition hover:border-orange-400/50"
+              <div className="relative z-10 flex shrink-0 items-center justify-between border-b border-orange-500/15 px-[11%] py-2.5 sm:px-[12%]">
+                <p className="font-mono text-[11px] font-semibold tabular-nums text-zinc-100 sm:text-xs">
+                  {clock || '--:--'}
+                </p>
+                <p className="font-mono text-[8px] uppercase tracking-[0.35em] text-orange-500/90">
+                  Garmin
+                </p>
+                <p className="font-mono text-[9px] tabular-nums text-zinc-500">
+                  {bandIndex + 1}/{BAND_ORDER.length}
+                </p>
+              </div>
+
+              <div
+                ref={bandsRef}
+                className="watch-bands-scroll relative z-10 min-h-0 flex-1 snap-y snap-mandatory overflow-x-hidden overflow-y-auto overscroll-y-contain"
+                aria-label="Bandas de contenido, desliza verticalmente"
+              >
+                {BAND_ORDER.map((id, index) => {
+                  const meta = SECTIONS[id]
+                  const Icon = meta.icon
+                  return (
+                    <section
+                      key={id}
+                      className="watch-band flex min-h-full w-full min-w-0 snap-start snap-always flex-col px-[11%] py-3 sm:px-[12%]"
+                      aria-label={`${meta.title}, banda ${index + 1}`}
                     >
-                      <ArrowLeft className="h-3 w-3" strokeWidth={2} />
-                      Menú
-                    </button>
-                    <p className="min-w-0 truncate px-1 text-center font-mono text-[9px] font-semibold uppercase tracking-wide text-orange-500 sm:text-[10px]">
-                      {SECTIONS[activeSection].title}
-                    </p>
-                    <span className="w-12 shrink-0" aria-hidden />
-                  </div>
-                  <div className="watch-screen-scroll relative z-10 mx-auto min-h-0 w-full min-w-0 max-w-full flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-[14%] pb-14 pt-3 sm:px-[16%]">
-                    <SectionBody id={activeSection} compact />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="relative z-10 shrink-0 border-b border-orange-500/20 px-4 pb-2 pt-4 text-center sm:pt-5">
-                    <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.45em] text-orange-500 sm:text-xs">
-                      Menú
-                    </p>
-                    <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-500 sm:text-[10px]">
-                      {clock || '--:--'}
-                    </p>
-                  </div>
-                  <div className="relative z-10 grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-2 px-3 pb-9 pt-2 sm:gap-2.5 sm:px-4 sm:pb-10">
-                    {zones.map((z) => {
-                      const meta = SECTIONS[z.id]
-                      const Icon = meta.icon
-                      return (
-                        <button
-                          key={z.id}
-                          type="button"
-                          onClick={() => onZone(z.id)}
-                          className={`group flex flex-col items-center justify-center gap-1.5 rounded-md border bg-zinc-900/70 px-1.5 py-2.5 text-center transition hover:border-orange-500/50 hover:bg-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/70 sm:py-3 ${z.accent} ${z.row} ${darkMode ? '' : 'bg-white/80'}`}
-                        >
-                          <span className="inline-flex h-8 w-8 items-center justify-center rounded-sm bg-black/40 text-orange-400 ring-1 ring-orange-500/20 transition group-hover:text-orange-300 sm:h-9 sm:w-9">
-                            {z.id === 'contact' ? (
-                              <>
-                                <Battery className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2} />
-                                <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2} />
-                              </>
-                            ) : (
-                              <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2} />
-                            )}
-                          </span>
-                          <p className="font-mono text-[10px] font-semibold uppercase leading-tight tracking-wide text-zinc-100 sm:text-xs">
+                      <div
+                        className={`mb-2 flex items-center gap-2 border-l-2 py-1 pl-2 ${BAND_ACCENTS[id]}`}
+                      >
+                        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded bg-black/35 text-orange-400 ring-1 ring-orange-500/25">
+                          {id === 'contact' ? (
+                            <>
+                              <Battery className="h-3 w-3" strokeWidth={2} />
+                              <Settings className="h-3 w-3" strokeWidth={2} />
+                            </>
+                          ) : (
+                            <Icon className="h-3.5 w-3.5" strokeWidth={2} />
+                          )}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="font-mono text-[8px] uppercase tracking-[0.28em] text-orange-500/80">
+                            Data field
+                          </p>
+                          <p className="truncate font-mono text-[11px] font-semibold uppercase tracking-wide text-zinc-100 sm:text-xs">
                             {meta.title}
                           </p>
-                          <p className="font-mono text-[8px] uppercase tracking-wider text-orange-500/70 opacity-80 sm:text-[9px]">
-                            {z.id === 'contact' ? 'Ajustes' : 'Campo'}
-                          </p>
-                        </button>
-                      )
-                    })}
-                  </div>
-                  <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 font-mono text-[8px] font-semibold uppercase tracking-[0.55em] text-zinc-600 sm:text-[9px]">
-                    Garmin
-                  </p>
-                </>
-              )}
+                        </div>
+                      </div>
+
+                      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden pb-2">
+                        <SectionBody id={id} compact />
+                      </div>
+
+                      {index < BAND_ORDER.length - 1 && (
+                        <p className="pointer-events-none mt-auto pt-2 text-center font-mono text-[8px] uppercase tracking-[0.2em] text-zinc-600">
+                          ↓ scroll
+                        </p>
+                      )}
+                    </section>
+                  )
+                })}
+              </div>
+
+              <div
+                className="pointer-events-none absolute right-[9%] top-1/2 z-20 flex -translate-y-1/2 flex-col gap-1.5 sm:right-[10%]"
+                aria-hidden
+              >
+                {BAND_ORDER.map((id, index) => (
+                  <span
+                    key={id}
+                    className={`block h-1.5 w-1.5 rounded-full transition ${
+                      index === bandIndex
+                        ? 'bg-orange-500 shadow-[0_0_6px_rgba(251,146,60,0.8)]'
+                        : 'bg-zinc-600/80'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -395,7 +424,6 @@ export default function PersonalSite() {
   const [phase, setPhase] = useState('hero')
   const [watchFrom, setWatchFrom] = useState(null)
   const [watchExpanded, setWatchExpanded] = useState(false)
-  const [activeSection, setActiveSection] = useState(null)
   const [darkMode, setDarkMode] = useState(true)
   const [soundOn, setSoundOn] = useState(false)
 
@@ -420,10 +448,6 @@ export default function PersonalSite() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.key !== 'Escape') return
-      if (activeSection) {
-        setActiveSection(null)
-        return
-      }
       if (phase === 'dashboard') {
         setPhase('hero')
         setWatchFrom(null)
@@ -432,7 +456,7 @@ export default function PersonalSite() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [activeSection, phase])
+  }, [phase])
 
   useEffect(() => {
     if (!soundOn) {
@@ -508,16 +532,11 @@ export default function PersonalSite() {
     setPhase('dashboard')
   }
 
-  const backToDashboard = () => setActiveSection(null)
-
   const backToHero = () => {
-    setActiveSection(null)
     setPhase('hero')
     setWatchFrom(null)
     setWatchExpanded(false)
   }
-
-  const onZone = (id) => setActiveSection(id)
 
   const shellBg = darkMode
     ? 'bg-zinc-950 text-zinc-100'
@@ -562,7 +581,7 @@ export default function PersonalSite() {
           />
         </div>
 
-        {phase === 'dashboard' && watchFrom && !activeSection && (
+        {phase === 'dashboard' && watchFrom && (
           <div
             role="presentation"
             className="fixed inset-0 z-40 cursor-pointer bg-black/55 backdrop-blur-[2px] transition-opacity"
@@ -574,7 +593,7 @@ export default function PersonalSite() {
           />
         )}
 
-        {phase === 'dashboard' && watchFrom && !activeSection && (
+        {phase === 'dashboard' && watchFrom && (
           <button
             type="button"
             onClick={backToHero}
@@ -608,9 +627,6 @@ export default function PersonalSite() {
             >
               <WatchFace
                 darkMode={darkMode}
-                activeSection={activeSection}
-                onZone={onZone}
-                onBackToMenu={backToDashboard}
                 onBackHero={backToHero}
                 onToggleDark={() => setDarkMode((v) => !v)}
                 onToggleSound={() => setSoundOn((v) => !v)}

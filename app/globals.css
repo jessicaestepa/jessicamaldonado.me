@@ -57,8 +57,15 @@
   animation: runner-bob 0.76s ease-in-out infinite;
 }
 
-/* Readable zone inside circular Garmin screen */
-.watch-screen-scroll {
+/* Circular Garmin screen: vertical bands with snap scroll */
+.watch-bands-scroll {
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
   -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 65%, transparent 100%);
   mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 65%, transparent 100%);
+}
+
+.watch-band {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
