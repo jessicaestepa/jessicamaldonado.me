@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import {
-  ArrowDown,
   ArrowLeft,
   Battery,
   Calendar,
@@ -80,7 +79,7 @@ function GrainOverlay() {
   )
 }
 
-function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick, darkMode }) {
+function HeroScene({ parallax, onMove, darkMode }) {
   const { x, y } = parallax
   const runnerParallax = { transform: `translate3d(${x * 10}px, ${y * 6}px, 0)` }
 
@@ -109,12 +108,10 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick, darkMode
           <div
             className="absolute inset-0 min-h-svh w-full"
             role="img"
-            aria-label="Animación: chica corriendo"
+            aria-label="Ilustración: chica corriendo"
           >
             <DotLottieReact
               src="/lottie/girl-running.lottie"
-              loop
-              autoplay
               layout={{ fit: 'cover', align: [0.5, 0.55] }}
               className="h-full min-h-svh w-full [&_canvas]:!h-full [&_canvas]:!w-full"
             />
@@ -123,42 +120,26 @@ function HeroScene({ parallax, onMove, showCue, watchRef, onWatchClick, darkMode
       </div>
 
       <div
-        className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center bg-gradient-to-t pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-32 ${
+        className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center bg-gradient-to-t pb-[max(2rem,env(safe-area-inset-bottom))] pt-32 ${
           darkMode === false
             ? 'from-slate-200 via-slate-200/90 to-transparent'
             : 'from-zinc-950 via-zinc-950/85 to-transparent'
         }`}
       >
-        <div className="pointer-events-auto flex flex-col items-center gap-3 px-4">
-          <ArrowDown
-            className={`h-8 w-8 motion-safe:animate-bounce ${
-              darkMode === false ? 'text-amber-700' : 'text-amber-200/90'
-            }`}
-            strokeWidth={2.5}
-            aria-hidden
-          />
-          <button
-            ref={watchRef}
-            type="button"
-            onClick={onWatchClick}
-            className={`rounded-full px-10 py-3 text-sm font-semibold tracking-wide shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
-              darkMode === false
-                ? 'bg-zinc-900 text-amber-50 shadow-zinc-900/20 hover:bg-zinc-800 focus-visible:ring-zinc-500 focus-visible:ring-offset-amber-50'
-                : 'bg-amber-500 text-zinc-950 shadow-amber-500/25 hover:bg-amber-400 focus-visible:ring-amber-300 focus-visible:ring-offset-zinc-950'
-            }`}
-            aria-label="Abrir el tablero"
-          >
-            Click here
-          </button>
+        <div className="flex flex-col items-center gap-2 px-4">
           <p
-            className={`max-w-md text-center text-xs ${
-              darkMode === false ? 'text-zinc-600' : 'text-zinc-400'
-            } ${showCue ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}
-            style={{
-              animation: showCue ? 'cue-fade 900ms ease-out forwards' : 'none',
-            }}
+            className={`font-serif text-4xl font-semibold tracking-[0.12em] md:text-6xl ${
+              darkMode === false ? 'text-zinc-900' : 'text-amber-200'
+            }`}
           >
-            Usa el botón para abrir el tablero tipo reloj.
+            COMING SOON
+          </p>
+          <p
+            className={`text-center font-mono text-[11px] uppercase tracking-[0.26em] ${
+              darkMode === false ? 'text-zinc-600' : 'text-zinc-400'
+            }`}
+          >
+            New version in progress
           </p>
         </div>
       </div>
@@ -420,22 +401,15 @@ function WatchFace({
 
 export default function PersonalSite() {
   const [parallax, setParallax] = useState({ x: 0, y: 0 })
-  const [showCue, setShowCue] = useState(false)
   const [phase, setPhase] = useState('hero')
   const [watchFrom, setWatchFrom] = useState(null)
   const [watchExpanded, setWatchExpanded] = useState(false)
   const [darkMode, setDarkMode] = useState(true)
   const [soundOn, setSoundOn] = useState(false)
 
-  const watchRef = useRef(null)
   const audioCtxRef = useRef(null)
   const oscRef = useRef(null)
   const osc2Ref = useRef(null)
-
-  useEffect(() => {
-    const t = setTimeout(() => setShowCue(true), 2000)
-    return () => clearTimeout(t)
-  }, [])
 
   useEffect(() => {
     if (phase !== 'dashboard' || watchExpanded) return
@@ -519,19 +493,6 @@ export default function PersonalSite() {
     setParallax({ x, y })
   }
 
-  const openWatch = () => {
-    const el = watchRef.current
-    if (!el || phase !== 'hero') return
-    const r = el.getBoundingClientRect()
-    setWatchFrom({
-      x: r.left + r.width / 2,
-      y: r.top + r.height / 2,
-      size: r.width,
-    })
-    setWatchExpanded(false)
-    setPhase('dashboard')
-  }
-
   const backToHero = () => {
     setPhase('hero')
     setWatchFrom(null)
@@ -574,9 +535,6 @@ export default function PersonalSite() {
           <HeroScene
             parallax={parallax}
             onMove={onMove}
-            showCue={showCue}
-            watchRef={watchRef}
-            onWatchClick={openWatch}
             darkMode={darkMode}
           />
         </div>
