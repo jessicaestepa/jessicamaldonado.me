@@ -1,5 +1,5 @@
-import PersonalSite from '@/components/PersonalSite'
+import Site from '@/components/Site'
 
 export default function Home() {
-  return <PersonalSite />
+  return <Site />
 }

@@ -1,7 +1,20 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
+import { Archivo, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { site } from '@/lib/site'
+
+const archivo = Archivo({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-sans',
+})
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-mono',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -15,7 +28,8 @@ export const metadata: Metadata = {
     'Jessica Maldonado',
     site.profession,
     site.city,
-    'portfolio',
+    'Vorena Capital',
+    'micro private equity',
     'Jessica M. Estepa',
   ],
   authors: [{ name: site.name, url: site.url }],
@@ -26,7 +40,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'es_CO',
+    locale: 'en_US',
     url: site.url,
     siteName: site.name,
     title: site.name,
@@ -89,14 +103,17 @@ const personJsonLd = {
   },
 }
 
+const themeInit = `(function(){try{var t=localStorage.getItem('jm-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:'light'}catch(e){document.documentElement.dataset.theme='light'}})()`
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode
 }>) {
   return (
-    <html lang="es-CO">
+    <html lang="en" data-theme="light" suppressHydrationWarning className={`${archivo.variable} ${plexMono.variable}`}>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
