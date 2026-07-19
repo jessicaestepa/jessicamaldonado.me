@@ -25,8 +25,9 @@ export const site = {
     linkedin: 'https://linkedin.com/in/jessicaestepa',
     github: 'https://github.com/jessicaestepa',
     instagram: 'https://instagram.com/jessicaestepa',
-    twitter: 'https://twitter.com/jessicaestepa',
-    twitterHandle: '@jessicaestepa',
+    twitter: 'https://x.com/Jess_Estepa',
+    twitterHandle: '@Jess_Estepa',
+    substack: 'https://jessicamaldonado423298.substack.com',
   },
 
   /** Document chrome — the race-result idiom. */

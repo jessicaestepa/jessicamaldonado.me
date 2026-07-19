@@ -94,6 +94,7 @@ const personJsonLd = {
     site.social.github,
     site.social.instagram,
     site.social.twitter,
+    site.social.substack,
   ],
   knowsAbout: [...site.knowsAbout],
   address: {

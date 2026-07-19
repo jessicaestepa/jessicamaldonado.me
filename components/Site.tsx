@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArrowDown, ArrowUpRight, Moon, Sun } from 'lucide-react'
 import { site } from '@/lib/site'
+import { formatPostDate, type SubstackPost } from '@/lib/substack'
 
 const NAV = [
   { id: 'about', label: 'About' },
   { id: 'splits', label: 'Splits' },
   { id: 'now', label: 'Now' },
+  { id: 'writing', label: 'Wire' },
   { id: 'beyond', label: 'Beyond' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -414,6 +416,80 @@ function Now() {
   )
 }
 
+function Writing({ post }: { post: SubstackPost }) {
+  const date = formatPostDate(post.pubDate)
+  return (
+    <section id="writing" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
+      <SectionRule label="On the wire" />
+      <div className="mt-10 grid gap-12 md:grid-cols-[1.4fr_1fr] md:gap-0">
+        <article className="md:pr-12">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--muted)]">
+            Substack
+            {date ? (
+              <>
+                {' '}
+                · <span className="text-[color:var(--ink)]">{date}</span>
+              </>
+            ) : null}
+          </p>
+          <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] md:text-4xl">
+            <a
+              href={post.link}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="link-sweep transition-colors hover:text-[color:var(--accent)]"
+            >
+              {post.title}
+            </a>
+          </h2>
+          {post.description ? (
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[color:var(--muted)]">
+              {post.description}
+            </p>
+          ) : null}
+          <a
+            href={post.link}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="link-sweep mt-8 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--accent)]"
+          >
+            Read on Substack
+            <ArrowUpRight className="h-3 w-3" strokeWidth={2} />
+          </a>
+        </article>
+
+        <aside className="md:border-l md:border-[color:var(--line-soft)] md:pl-12">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--muted)]">
+            On X
+          </p>
+          <a
+            href={site.social.twitter}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="mt-4 block"
+          >
+            <p className="text-2xl font-bold tracking-[-0.01em] transition-colors hover:text-[color:var(--accent)] md:text-3xl">
+              {site.social.twitterHandle}
+            </p>
+          </a>
+          <p className="mt-4 text-[15px] leading-relaxed text-[color:var(--muted)]">
+            Thoughts in public — deals, training, and whatever I&apos;m building.
+          </p>
+          <a
+            href={site.social.twitter}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="link-sweep mt-8 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--accent)]"
+          >
+            View profile
+            <ArrowUpRight className="h-3 w-3" strokeWidth={2} />
+          </a>
+        </aside>
+      </div>
+    </section>
+  )
+}
+
 function Beyond() {
   return (
     <section id="beyond" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
@@ -438,6 +514,7 @@ function Contact() {
     { label: 'LinkedIn', href: site.social.linkedin },
     { label: 'GitHub', href: site.social.github },
     { label: 'X', href: site.social.twitter },
+    { label: 'Substack', href: site.social.substack },
     { label: 'Instagram', href: site.social.instagram },
   ]
   return (
@@ -505,7 +582,7 @@ function FinishLine() {
   )
 }
 
-export default function Site() {
+export default function Site({ latestPost }: { latestPost: SubstackPost }) {
   return (
     <div className="relative min-h-svh">
       <Header />
@@ -517,6 +594,7 @@ export default function Site() {
         <About />
         <Splits />
         <Now />
+        <Writing post={latestPost} />
         <Beyond />
         <Contact />
       </main>
