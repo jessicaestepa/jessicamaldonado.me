@@ -82,7 +82,40 @@ function useOfficialTime() {
   return elapsed
 }
 
-/** The one orchestrated moment below the fold: split rows time in on first view. */
+/** Staggered reveal when an element enters the viewport. */
+function useReveal<T extends HTMLElement>(staggerMs = 0) {
+  const ref = useRef<T | null>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !('IntersectionObserver' in window)) {
+      el?.classList.add('is-in')
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          const kids = el.querySelectorAll<HTMLElement>('[data-reveal]')
+          if (kids.length) {
+            kids.forEach((kid, i) => {
+              kid.style.setProperty('--t', `${i * staggerMs}ms`)
+              kid.classList.add('is-in')
+            })
+          } else {
+            el.classList.add('is-in')
+          }
+          io.disconnect()
+        })
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -8% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [staggerMs])
+  return ref
+}
+
+/** Split rows time in on first view. */
 function useSplitReveal(ref: React.RefObject<HTMLTableSectionElement | null>) {
   useEffect(() => {
     const body = ref.current
@@ -191,9 +224,16 @@ function Header() {
 
 function Masthead() {
   const days = useRaceCountdown()
+  const ruleRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => ruleRef.current?.classList.add('is-in'))
+    return () => cancelAnimationFrame(id)
+  }, [])
+
   return (
     <section id="top" className="mx-auto w-full max-w-5xl px-5 pt-28 md:px-8 md:pt-36">
-      <div className="time-in border-t-[3px] border-[color:var(--rule)]" style={t(0)}>
+      <div ref={ruleRef} className="time-in rule-draw" style={t(0)}>
         <div className="flex items-baseline justify-between pt-3">
           <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-[color:var(--ink)]">
             {site.doc.label.split(' ')[0]}{' '}
@@ -232,10 +272,7 @@ function Masthead() {
       </p>
 
       <div className="time-in mt-10 flex flex-wrap items-center gap-6" style={t(480)}>
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-2 bg-[color:var(--accent)] px-6 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--accent-ink)] transition hover:bg-[color:var(--accent-bright)]"
-        >
+        <a href="#contact" className="go-btn">
           {site.hero.ctaPrimary}
           <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
         </a>
@@ -266,6 +303,7 @@ function Masthead() {
 
 function Vitals() {
   const days = useRaceCountdown()
+  const ref = useReveal<HTMLDivElement>(70)
   const items = [
     { label: 'Race', value: `${site.race.shortLabel} · T−${days ?? '--'}`, live: true },
     { label: 'Base', value: site.city, live: false },
@@ -275,11 +313,15 @@ function Vitals() {
   ]
   return (
     <section aria-label="Vitals" className="mx-auto w-full max-w-5xl px-5 md:px-8">
-      <div className="vitals-scroll flex w-full items-stretch overflow-x-auto border-b border-[color:var(--line)]">
+      <div
+        ref={ref}
+        className="vitals-scroll flex w-full items-stretch overflow-x-auto border-b border-[color:var(--line)]"
+      >
         {items.map((item, i) => (
           <div
             key={item.label}
-            className={`flex shrink-0 flex-col gap-1 py-4 pr-8 ${
+            data-reveal
+            className={`vital-cell reveal flex shrink-0 flex-col gap-1 py-4 pr-8 ${
               i > 0 ? 'border-l border-[color:var(--line-soft)] pl-8' : ''
             }`}
           >
@@ -298,8 +340,9 @@ function Vitals() {
 }
 
 function SectionRule({ label }: { label: string }) {
+  const ref = useReveal<HTMLDivElement>()
   return (
-    <div className="border-t-2 border-[color:var(--rule)] pt-3">
+    <div ref={ref} className="rule-draw rule-draw-sm reveal pt-3">
       <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-[color:var(--muted)]">
         <span className="font-semibold text-[color:var(--accent)]">Section</span> — {label}
       </p>
@@ -308,22 +351,33 @@ function SectionRule({ label }: { label: string }) {
 }
 
 function About() {
+  const ref = useReveal<HTMLDivElement>(90)
   return (
     <section id="about" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
       <SectionRule label={site.about.title} />
-      <div className="mt-10 grid gap-10 md:grid-cols-[1fr_240px] md:gap-16">
+      <div ref={ref} className="mt-10 grid gap-10 md:grid-cols-[1fr_240px] md:gap-16">
         <div className="max-w-2xl space-y-6">
           {site.about.paragraphs.map((paragraph, i) => (
-            <p key={i} className="text-lg leading-relaxed md:text-xl md:leading-[1.7]">
+            <p
+              key={i}
+              data-reveal
+              className="reveal text-lg leading-relaxed md:text-xl md:leading-[1.7]"
+            >
               {paragraph}
             </p>
           ))}
-          <p className="!mt-12 text-3xl font-extrabold uppercase leading-tight tracking-[-0.02em] md:text-4xl">
+          <p
+            data-reveal
+            className="reveal !mt-12 text-3xl font-extrabold uppercase leading-tight tracking-[-0.02em] md:text-4xl"
+          >
             I don&apos;t sprint.
-            <br />I <span className="bg-[color:var(--mint)] px-1 text-[color:var(--accent)]">compound</span>.
+            <br />I <span className="compound-mark">compound</span>.
           </p>
         </div>
-        <aside className="max-w-[240px] self-start border-l border-[color:var(--line)] pl-5 md:mt-2">
+        <aside
+          data-reveal
+          className="reveal max-w-[240px] self-start border-l border-[color:var(--line)] pl-5 md:mt-2"
+        >
           <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-[color:var(--faint)]">
             Margin note
           </p>
@@ -396,12 +450,17 @@ function Splits() {
 }
 
 function Now() {
+  const ref = useReveal<HTMLUListElement>(80)
   return (
     <section id="now" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
       <SectionRule label="This season" />
-      <ul className="mt-10 max-w-2xl space-y-5">
+      <ul ref={ref} className="mt-10 max-w-2xl space-y-5">
         {site.now.map((item, i) => (
-          <li key={i} className="flex items-start gap-4 text-lg leading-relaxed md:text-xl">
+          <li
+            key={i}
+            data-reveal
+            className="reveal flex items-start gap-4 text-lg leading-relaxed md:text-xl"
+          >
             <span
               className="mt-[0.5em] font-mono text-sm leading-none text-[color:var(--accent)]"
               aria-hidden
@@ -418,11 +477,12 @@ function Now() {
 
 function Writing({ post }: { post: SubstackPost }) {
   const date = formatPostDate(post.pubDate)
+  const ref = useReveal<HTMLDivElement>(100)
   return (
     <section id="writing" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
       <SectionRule label="On the wire" />
-      <div className="mt-10 grid gap-12 md:grid-cols-[1.4fr_1fr] md:gap-0">
-        <article className="md:pr-12">
+      <div ref={ref} className="mt-10 grid gap-12 md:grid-cols-[1.4fr_1fr] md:gap-0">
+        <article data-reveal className="reveal md:pr-12">
           <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--muted)]">
             Substack
             {date ? (
@@ -458,7 +518,10 @@ function Writing({ post }: { post: SubstackPost }) {
           </a>
         </article>
 
-        <aside className="md:border-l md:border-[color:var(--line-soft)] md:pl-12">
+        <aside
+          data-reveal
+          className="reveal md:border-l md:border-[color:var(--line-soft)] md:pl-12"
+        >
           <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--muted)]">
             On X
           </p>
@@ -491,14 +554,16 @@ function Writing({ post }: { post: SubstackPost }) {
 }
 
 function Beyond() {
+  const ref = useReveal<HTMLDivElement>(110)
   return (
     <section id="beyond" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
       <SectionRule label="Beyond the desk" />
-      <div className="mt-10 grid gap-10 md:grid-cols-3 md:gap-0">
+      <div ref={ref} className="mt-10 grid gap-10 md:grid-cols-3 md:gap-0">
         {site.beyond.map((card, i) => (
           <article
             key={card.title}
-            className={`md:pr-10 ${i > 0 ? 'md:border-l md:border-[color:var(--line-soft)] md:pl-10' : ''}`}
+            data-reveal
+            className={`reveal md:pr-10 ${i > 0 ? 'md:border-l md:border-[color:var(--line-soft)] md:pl-10' : ''}`}
           >
             <h3 className="text-lg font-bold tracking-[-0.01em]">{card.title}</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-[color:var(--muted)]">{card.body}</p>
@@ -510,6 +575,7 @@ function Beyond() {
 }
 
 function Contact() {
+  const ref = useReveal<HTMLDivElement>(90)
   const socials = [
     { label: 'LinkedIn', href: site.social.linkedin },
     { label: 'GitHub', href: site.social.github },
@@ -520,20 +586,27 @@ function Contact() {
   return (
     <section id="contact" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-32">
       <SectionRule label={site.contact.kicker} />
-      <div className="mt-10 max-w-3xl">
-        <h2 className="text-4xl font-extrabold uppercase leading-[1.02] tracking-[-0.02em] md:text-6xl">
+      <div ref={ref} className="mt-10 max-w-3xl">
+        <h2
+          data-reveal
+          className="reveal text-4xl font-extrabold uppercase leading-[1.02] tracking-[-0.02em] md:text-6xl"
+        >
           {site.contact.heading}
         </h2>
-        <p className="mt-6 max-w-xl text-lg leading-relaxed text-[color:var(--muted)]">
+        <p
+          data-reveal
+          className="reveal mt-6 max-w-xl text-lg leading-relaxed text-[color:var(--muted)]"
+        >
           {site.contact.body}
         </p>
         <a
+          data-reveal
           href={`mailto:${site.email}`}
-          className="link-sweep mt-10 inline-block text-xl font-bold tracking-[-0.01em] text-[color:var(--accent)] md:text-3xl"
+          className="link-sweep reveal mt-10 inline-block text-xl font-bold tracking-[-0.01em] text-[color:var(--accent)] md:text-3xl"
         >
           {site.email}
         </a>
-        <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div data-reveal className="reveal mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
           {socials.map((social) => (
             <a
               key={social.label}
@@ -555,9 +628,10 @@ function Contact() {
 function FinishLine() {
   const elapsed = useOfficialTime()
   const commit = process.env.NEXT_PUBLIC_COMMIT ?? 'local'
+  const ref = useReveal<HTMLDivElement>()
   return (
     <footer className="mx-auto mt-24 w-full max-w-5xl px-5 pb-10 md:px-8 md:mt-32">
-      <div className="border-t-[3px] border-[color:var(--rule)] pt-4">
+      <div ref={ref} className="rule-draw reveal pt-4">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--muted)]">
             Official time{' '}
@@ -585,20 +659,23 @@ function FinishLine() {
 export default function Site({ latestPost }: { latestPost: SubstackPost }) {
   return (
     <div className="relative min-h-svh">
-      <Header />
-      <main>
-        <Masthead />
-        <div className="mt-14">
-          <Vitals />
-        </div>
-        <About />
-        <Splits />
-        <Now />
-        <Writing post={latestPost} />
-        <Beyond />
-        <Contact />
-      </main>
-      <FinishLine />
+      <div className="paper-grain" aria-hidden />
+      <div className="relative z-10">
+        <Header />
+        <main>
+          <Masthead />
+          <div className="mt-14">
+            <Vitals />
+          </div>
+          <About />
+          <Splits />
+          <Now />
+          <Writing post={latestPost} />
+          <Beyond />
+          <Contact />
+        </main>
+        <FinishLine />
+      </div>
     </div>
   )
 }
