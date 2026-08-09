@@ -14,10 +14,7 @@ export default function NotFound() {
       <p className="mt-6 max-w-md text-lg leading-relaxed text-[color:var(--muted)]">
         This isn&apos;t on the course. Error 404 — the marshals have been notified.
       </p>
-      <Link
-        href="/"
-        className="mt-10 inline-flex w-fit items-center gap-2 bg-[color:var(--accent)] px-6 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--accent-ink)] transition hover:bg-[color:var(--accent-bright)]"
-      >
+      <Link href="/" className="go-btn mt-10 w-fit">
         Back to the start line
       </Link>
       <div className="mt-16 flex items-center justify-between border-b border-[color:var(--line)] pb-4">

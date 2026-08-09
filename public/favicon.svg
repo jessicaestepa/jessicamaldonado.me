@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <style>
-    .bg { fill: #fbfbf7; }
-    .ink { fill: #171a15; }
-    .go { fill: #1d7a46; }
+    .bg { fill: #f4f6ef; }
+    .ink { fill: #121510; }
+    .go { fill: #0f6b3a; }
     @media (prefers-color-scheme: dark) {
-      .bg { fill: #121410; }
-      .ink { fill: #edefe6; }
-      .go { fill: #4ccb7e; }
+      .bg { fill: #0e120d; }
+      .ink { fill: #eef2e6; }
+      .go { fill: #3fd47a; }
     }
   </style>
   <rect class="bg" width="64" height="64" rx="12"/>
