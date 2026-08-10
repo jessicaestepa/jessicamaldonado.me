@@ -7,45 +7,49 @@
 
 :root,
 :root[data-theme='light'] {
-  --paper: #f4f6ef;
-  --paper-deep: #e8ece0;
-  --card: #ebf0e4;
-  --ink: #121510;
-  --muted: #566055;
-  --faint: #7a8276;
-  --rule: #121510;
-  --line: rgba(18, 21, 16, 0.14);
-  --line-soft: rgba(18, 21, 16, 0.08);
-  --accent: #0f6b3a;
-  --accent-bright: #178a4a;
-  --accent-ink: #f4f6ef;
-  --mint: #d4ebd9;
-  --wash: rgba(15, 107, 58, 0.07);
-  --glow: rgba(15, 107, 58, 0.18);
-  --atmosphere-top: #e4f0e6;
-  --atmosphere-mid: #f4f6ef;
-  --atmosphere-edge: #dfe8d4;
+  --paper: #f5f6f2;
+  --paper-deep: #e7ebe3;
+  --card: #eef2eb;
+  --ink: #1c211c;
+  --muted: #5f6a62;
+  --faint: #8a948c;
+  --rule: #1c211c;
+  --line: rgba(28, 33, 28, 0.12);
+  --line-soft: rgba(28, 33, 28, 0.07);
+  --accent: #6d9b82;
+  --accent-bright: #86b399;
+  --accent-ink: #f7faf7;
+  --mint: #e2efe7;
+  --wash: rgba(109, 155, 130, 0.12);
+  --glow: rgba(109, 155, 130, 0.28);
+  --sky: #d9e8ef;
+  --sky-deep: #c5d9c8;
+  --atmosphere-top: #e8f1eb;
+  --atmosphere-mid: #f5f6f2;
+  --atmosphere-edge: #e6ebe2;
 }
 
 :root[data-theme='dark'] {
-  --paper: #0e120d;
-  --paper-deep: #161b14;
-  --card: #1a2118;
-  --ink: #eef2e6;
-  --muted: #9aa694;
-  --faint: #6d7669;
-  --rule: #eef2e6;
-  --line: rgba(238, 242, 230, 0.16);
-  --line-soft: rgba(238, 242, 230, 0.09);
-  --accent: #3fd47a;
-  --accent-bright: #5aee94;
-  --accent-ink: #0a100c;
-  --mint: rgba(63, 212, 122, 0.14);
-  --wash: rgba(63, 212, 122, 0.08);
-  --glow: rgba(63, 212, 122, 0.22);
-  --atmosphere-top: #142018;
-  --atmosphere-mid: #0e120d;
-  --atmosphere-edge: #101610;
+  --paper: #111411;
+  --paper-deep: #181c18;
+  --card: #1b211c;
+  --ink: #e8eee8;
+  --muted: #9aa69e;
+  --faint: #6f796f;
+  --rule: #e8eee8;
+  --line: rgba(232, 238, 232, 0.14);
+  --line-soft: rgba(232, 238, 232, 0.08);
+  --accent: #9bc4ad;
+  --accent-bright: #b3d4c0;
+  --accent-ink: #101410;
+  --mint: rgba(155, 196, 173, 0.16);
+  --wash: rgba(155, 196, 173, 0.1);
+  --glow: rgba(155, 196, 173, 0.28);
+  --sky: #1a2622;
+  --sky-deep: #243028;
+  --atmosphere-top: #17201b;
+  --atmosphere-mid: #111411;
+  --atmosphere-edge: #141814;
 }
 
 @layer base {
@@ -331,6 +335,92 @@
 
 .vital-cell:hover {
   background-color: var(--wash);
+}
+
+/* Course figure + film strip — visual anchor without cards */
+
+.course-figure {
+  position: relative;
+  isolation: isolate;
+  min-height: 280px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 70% at 55% 60%, var(--mint), transparent 70%),
+    linear-gradient(165deg, var(--sky) 0%, var(--mint) 45%, var(--sky-deep) 100%);
+}
+
+.course-figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    var(--paper) 0%,
+    transparent 28%,
+    transparent 100%
+  );
+}
+
+.course-figure-runner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.course-figure-runner canvas,
+.course-figure-runner > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.course-strip {
+  position: relative;
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, var(--sky) 0%, var(--mint) 55%, var(--sky-deep) 100%);
+}
+
+.course-strip-sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.course-strip-sky .hill-a {
+  fill: var(--sky-deep);
+  opacity: 0.55;
+}
+
+.course-strip-sky .hill-b {
+  fill: var(--accent);
+  opacity: 0.18;
+}
+
+.course-strip-sky .track {
+  stroke: var(--ink);
+  stroke-opacity: 0.35;
+}
+
+.course-strip-sky .track-soft {
+  stroke: var(--accent);
+  stroke-opacity: 0.45;
+}
+
+.course-km {
+  position: relative;
+  z-index: 1;
+}
+
+.course-km-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--mint);
 }
 
 /* ---------- Reduced motion ---------- */

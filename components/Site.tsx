@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { ArrowDown, ArrowUpRight, Moon, Sun } from 'lucide-react'
 import { site } from '@/lib/site'
 import { formatPostDate, type SubstackPost } from '@/lib/substack'
@@ -222,6 +223,95 @@ function Header() {
   )
 }
 
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setReduced(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+  return reduced
+}
+
+function CourseFigure() {
+  const reduced = usePrefersReducedMotion()
+  return (
+    <div className="course-figure h-full min-h-[260px] w-full md:min-h-[340px]">
+      <div className="course-figure-runner" role="img" aria-label="Runner on course">
+        <DotLottieReact
+          src="/lottie/girl-running.lottie"
+          autoplay={!reduced}
+          loop={!reduced}
+          layout={{ fit: 'cover', align: [0.52, 0.55] }}
+          className="h-full w-full"
+        />
+      </div>
+      <div className="absolute bottom-3 left-3 z-[3] font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--ink)]/70">
+        Berlin block · {site.city}
+      </div>
+    </div>
+  )
+}
+
+function CourseStrip() {
+  const ref = useReveal<HTMLElement>(80)
+  const marks = [
+    { km: '05K', label: 'Rappi' },
+    { km: '21K', label: 'Latin Leap' },
+    { km: '42K', label: 'Vorena' },
+  ]
+  return (
+    <section ref={ref} aria-label="Course" className="course-strip mt-14">
+      <svg
+        className="course-strip-sky"
+        viewBox="0 0 1200 220"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden
+      >
+        <path
+          className="hill-a"
+          d="M0 140 C160 90 260 100 380 120 C520 145 620 70 760 95 C900 120 1020 80 1200 110 L1200 220 L0 220 Z"
+        />
+        <path
+          className="hill-b"
+          d="M0 165 C200 130 340 170 500 150 C680 125 820 165 980 145 C1080 132 1140 150 1200 160 L1200 220 L0 220 Z"
+        />
+        <path
+          className="track-soft"
+          d="M40 168 C220 150 360 185 540 160 C740 130 900 175 1160 155"
+          fill="none"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+        <path
+          className="track"
+          d="M40 178 C220 160 360 195 540 170 C740 140 900 185 1160 165"
+          fill="none"
+          strokeWidth="1.25"
+          strokeDasharray="3 7"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      <div className="course-km relative z-[1] mx-auto flex w-full max-w-5xl items-end justify-between gap-4 px-5 py-8 md:px-8 md:py-10">
+        {marks.map((mark) => (
+          <div key={mark.km} data-reveal className="reveal flex flex-col items-start gap-2">
+            <span className="course-km-dot" aria-hidden />
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[color:var(--ink)]">
+              {mark.km}
+            </p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--muted)]">
+              {mark.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function Masthead() {
   const days = useRaceCountdown()
   const ruleRef = useRef<HTMLDivElement | null>(null)
@@ -245,48 +335,56 @@ function Masthead() {
         </div>
       </div>
 
-      <h1
-        className="time-in mt-10 text-[13vw] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-[color:var(--ink)] md:text-8xl"
-        style={t(120)}
-      >
-        {site.displayName}
-      </h1>
-      <p
-        className="time-in mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--muted)]"
-        style={t(220)}
-      >
-        {site.profession} · {site.city}
-      </p>
+      <div className="mt-10 grid items-end gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-12">
+        <div>
+          <h1
+            className="time-in text-[12vw] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-[color:var(--ink)] md:text-7xl lg:text-8xl"
+            style={t(120)}
+          >
+            {site.displayName}
+          </h1>
+          <p
+            className="time-in mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--muted)]"
+            style={t(220)}
+          >
+            {site.profession} · {site.city}
+          </p>
 
-      <p
-        className="time-in mt-12 max-w-2xl text-2xl font-medium leading-snug tracking-[-0.01em] md:text-[2rem]"
-        style={t(320)}
-      >
-        {site.hero.heading}
-      </p>
-      <p
-        className="time-in mt-5 max-w-xl text-base leading-relaxed text-[color:var(--muted)] md:text-lg"
-        style={t(400)}
-      >
-        {site.hero.sub}
-      </p>
+          <p
+            className="time-in mt-10 max-w-xl text-2xl font-medium leading-snug tracking-[-0.01em] md:text-[1.85rem]"
+            style={t(320)}
+          >
+            {site.hero.heading}
+          </p>
+          <p
+            className="time-in mt-5 max-w-lg text-base leading-relaxed text-[color:var(--muted)] md:text-lg"
+            style={t(400)}
+          >
+            {site.hero.sub}
+          </p>
 
-      <div className="time-in mt-10 flex flex-wrap items-center gap-6" style={t(480)}>
-        <a href="#contact" className="go-btn">
-          {site.hero.ctaPrimary}
-          <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
-        </a>
-        <a
-          href="#about"
-          className="link-sweep inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--muted)] hover:text-[color:var(--ink)]"
-        >
-          {site.hero.ctaSecondary}
-          <ArrowDown className="h-3.5 w-3.5" strokeWidth={2} />
-        </a>
+          <div className="time-in mt-10 flex flex-wrap items-center gap-6" style={t(480)}>
+            <a href="#contact" className="go-btn">
+              {site.hero.ctaPrimary}
+              <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+            </a>
+            <a
+              href="#about"
+              className="link-sweep inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+            >
+              {site.hero.ctaSecondary}
+              <ArrowDown className="h-3.5 w-3.5" strokeWidth={2} />
+            </a>
+          </div>
+        </div>
+
+        <div className="time-in" style={t(280)}>
+          <CourseFigure />
+        </div>
       </div>
 
       <div
-        className="time-in mt-16 flex items-center justify-between gap-6 border-b border-[color:var(--line)] pb-5"
+        className="time-in mt-14 flex items-center justify-between gap-6 border-b border-[color:var(--line)] pb-5"
         style={t(560)}
       >
         <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--muted)]">
@@ -664,7 +762,8 @@ export default function Site({ latestPost }: { latestPost: SubstackPost }) {
         <Header />
         <main>
           <Masthead />
-          <div className="mt-14">
+          <CourseStrip />
+          <div className="mt-10">
             <Vitals />
           </div>
           <About />
