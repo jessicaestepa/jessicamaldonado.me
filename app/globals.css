@@ -337,43 +337,7 @@
   background-color: var(--wash);
 }
 
-/* Course figure + film strip — visual anchor without cards */
-
-.course-figure {
-  position: relative;
-  isolation: isolate;
-  min-height: 280px;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 80% 70% at 55% 60%, var(--mint), transparent 70%),
-    linear-gradient(165deg, var(--sky) 0%, var(--mint) 45%, var(--sky-deep) 100%);
-}
-
-.course-figure::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    var(--paper) 0%,
-    transparent 28%,
-    transparent 100%
-  );
-}
-
-.course-figure-runner {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.course-figure-runner canvas,
-.course-figure-runner > div {
-  width: 100% !important;
-  height: 100% !important;
-}
+/* Course strip — soft landscape visual without cards */
 
 .course-strip {
   position: relative;

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { ArrowDown, ArrowUpRight, Moon, Sun } from 'lucide-react'
 import { site } from '@/lib/site'
 import { formatPostDate, type SubstackPost } from '@/lib/substack'
@@ -223,38 +222,6 @@ function Header() {
   )
 }
 
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setReduced(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
-  return reduced
-}
-
-function CourseFigure() {
-  const reduced = usePrefersReducedMotion()
-  return (
-    <div className="course-figure h-full min-h-[260px] w-full md:min-h-[340px]">
-      <div className="course-figure-runner" role="img" aria-label="Runner on course">
-        <DotLottieReact
-          src="/lottie/girl-running.lottie"
-          autoplay={!reduced}
-          loop={!reduced}
-          layout={{ fit: 'cover', align: [0.52, 0.55] }}
-          className="h-full w-full"
-        />
-      </div>
-      <div className="absolute bottom-3 left-3 z-[3] font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--ink)]/70">
-        Berlin block · {site.city}
-      </div>
-    </div>
-  )
-}
-
 function CourseStrip() {
   const ref = useReveal<HTMLElement>(80)
   const marks = [
@@ -335,52 +302,44 @@ function Masthead() {
         </div>
       </div>
 
-      <div className="mt-10 grid items-end gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-12">
-        <div>
-          <h1
-            className="time-in text-[12vw] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-[color:var(--ink)] md:text-7xl lg:text-8xl"
-            style={t(120)}
-          >
-            {site.displayName}
-          </h1>
-          <p
-            className="time-in mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--muted)]"
-            style={t(220)}
-          >
-            {site.profession} · {site.city}
-          </p>
+      <h1
+        className="time-in mt-10 text-[13vw] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-[color:var(--ink)] md:text-8xl"
+        style={t(120)}
+      >
+        {site.displayName}
+      </h1>
+      <p
+        className="time-in mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--muted)]"
+        style={t(220)}
+      >
+        {site.profession} · {site.city}
+      </p>
 
-          <p
-            className="time-in mt-10 max-w-xl text-2xl font-medium leading-snug tracking-[-0.01em] md:text-[1.85rem]"
-            style={t(320)}
-          >
-            {site.hero.heading}
-          </p>
-          <p
-            className="time-in mt-5 max-w-lg text-base leading-relaxed text-[color:var(--muted)] md:text-lg"
-            style={t(400)}
-          >
-            {site.hero.sub}
-          </p>
+      <p
+        className="time-in mt-12 max-w-2xl text-2xl font-medium leading-snug tracking-[-0.01em] md:text-[2rem]"
+        style={t(320)}
+      >
+        {site.hero.heading}
+      </p>
+      <p
+        className="time-in mt-5 max-w-xl text-base leading-relaxed text-[color:var(--muted)] md:text-lg"
+        style={t(400)}
+      >
+        {site.hero.sub}
+      </p>
 
-          <div className="time-in mt-10 flex flex-wrap items-center gap-6" style={t(480)}>
-            <a href="#contact" className="go-btn">
-              {site.hero.ctaPrimary}
-              <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
-            </a>
-            <a
-              href="#about"
-              className="link-sweep inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--muted)] hover:text-[color:var(--ink)]"
-            >
-              {site.hero.ctaSecondary}
-              <ArrowDown className="h-3.5 w-3.5" strokeWidth={2} />
-            </a>
-          </div>
-        </div>
-
-        <div className="time-in" style={t(280)}>
-          <CourseFigure />
-        </div>
+      <div className="time-in mt-10 flex flex-wrap items-center gap-6" style={t(480)}>
+        <a href="#contact" className="go-btn">
+          {site.hero.ctaPrimary}
+          <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+        </a>
+        <a
+          href="#about"
+          className="link-sweep inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+        >
+          {site.hero.ctaSecondary}
+          <ArrowDown className="h-3.5 w-3.5" strokeWidth={2} />
+        </a>
       </div>
 
       <div
