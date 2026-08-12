@@ -7,49 +7,49 @@
 
 :root,
 :root[data-theme='light'] {
-  --paper: #f5f6f2;
-  --paper-deep: #e7ebe3;
-  --card: #eef2eb;
-  --ink: #1c211c;
-  --muted: #5f6a62;
-  --faint: #8a948c;
-  --rule: #1c211c;
-  --line: rgba(28, 33, 28, 0.12);
-  --line-soft: rgba(28, 33, 28, 0.07);
-  --accent: #6d9b82;
-  --accent-bright: #86b399;
-  --accent-ink: #f7faf7;
-  --mint: #e2efe7;
-  --wash: rgba(109, 155, 130, 0.12);
-  --glow: rgba(109, 155, 130, 0.28);
-  --sky: #d9e8ef;
-  --sky-deep: #c5d9c8;
-  --atmosphere-top: #e8f1eb;
-  --atmosphere-mid: #f5f6f2;
-  --atmosphere-edge: #e6ebe2;
+  --paper: #f3f7f6;
+  --paper-deep: #e4eeeb;
+  --card: #eaf2f0;
+  --ink: #15201e;
+  --muted: #5a6b67;
+  --faint: #849490;
+  --rule: #15201e;
+  --line: rgba(21, 32, 30, 0.12);
+  --line-soft: rgba(21, 32, 30, 0.07);
+  --accent: #3fa89a;
+  --accent-bright: #56bdb0;
+  --accent-ink: #f4faf9;
+  --mint: #d5efeb;
+  --wash: rgba(63, 168, 154, 0.12);
+  --glow: rgba(63, 168, 154, 0.3);
+  --sky: #d2ebea;
+  --sky-deep: #b8ddd6;
+  --atmosphere-top: #dff1ee;
+  --atmosphere-mid: #f3f7f6;
+  --atmosphere-edge: #e2eeeb;
 }
 
 :root[data-theme='dark'] {
-  --paper: #111411;
-  --paper-deep: #181c18;
-  --card: #1b211c;
-  --ink: #e8eee8;
-  --muted: #9aa69e;
-  --faint: #6f796f;
-  --rule: #e8eee8;
-  --line: rgba(232, 238, 232, 0.14);
-  --line-soft: rgba(232, 238, 232, 0.08);
-  --accent: #9bc4ad;
-  --accent-bright: #b3d4c0;
-  --accent-ink: #101410;
-  --mint: rgba(155, 196, 173, 0.16);
-  --wash: rgba(155, 196, 173, 0.1);
-  --glow: rgba(155, 196, 173, 0.28);
-  --sky: #1a2622;
-  --sky-deep: #243028;
-  --atmosphere-top: #17201b;
-  --atmosphere-mid: #111411;
-  --atmosphere-edge: #141814;
+  --paper: #0f1413;
+  --paper-deep: #161c1b;
+  --card: #1a2221;
+  --ink: #e6efed;
+  --muted: #97a8a4;
+  --faint: #6d7c78;
+  --rule: #e6efed;
+  --line: rgba(230, 239, 237, 0.14);
+  --line-soft: rgba(230, 239, 237, 0.08);
+  --accent: #6fd4c4;
+  --accent-bright: #8ae0d2;
+  --accent-ink: #0c1211;
+  --mint: rgba(111, 212, 196, 0.16);
+  --wash: rgba(111, 212, 196, 0.1);
+  --glow: rgba(111, 212, 196, 0.3);
+  --sky: #152422;
+  --sky-deep: #1c322e;
+  --atmosphere-top: #152420;
+  --atmosphere-mid: #0f1413;
+  --atmosphere-edge: #121918;
 }
 
 @layer base {
