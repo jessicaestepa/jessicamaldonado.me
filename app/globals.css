@@ -3,53 +3,53 @@
 @tailwind utilities;
 
 /* ---------- Design tokens — "Resultado Oficial" ---------- */
-/* Light = race day (default). Dark = night race. */
+/* Light = race day (default). Dark = night race. Warm salmon, not mint. */
 
 :root,
 :root[data-theme='light'] {
-  --paper: #f3f7f6;
-  --paper-deep: #e4eeeb;
-  --card: #eaf2f0;
-  --ink: #15201e;
-  --muted: #5a6b67;
-  --faint: #849490;
-  --rule: #15201e;
-  --line: rgba(21, 32, 30, 0.12);
-  --line-soft: rgba(21, 32, 30, 0.07);
-  --accent: #3fa89a;
-  --accent-bright: #56bdb0;
-  --accent-ink: #f4faf9;
-  --mint: #d5efeb;
-  --wash: rgba(63, 168, 154, 0.12);
-  --glow: rgba(63, 168, 154, 0.3);
-  --sky: #d2ebea;
-  --sky-deep: #b8ddd6;
-  --atmosphere-top: #dff1ee;
-  --atmosphere-mid: #f3f7f6;
-  --atmosphere-edge: #e2eeeb;
+  --paper: #faf3ef;
+  --paper-deep: #f3e6df;
+  --card: #f6eae4;
+  --ink: #1c1412;
+  --muted: #6b5752;
+  --faint: #947f79;
+  --rule: #1c1412;
+  --line: rgba(28, 20, 18, 0.12);
+  --line-soft: rgba(28, 20, 18, 0.07);
+  --accent: #e07a5f;
+  --accent-bright: #ef8d74;
+  --accent-ink: #fff8f5;
+  --mint: #f5dcd3;
+  --wash: rgba(224, 122, 95, 0.12);
+  --glow: rgba(224, 122, 95, 0.32);
+  --sky: #f3ddd4;
+  --sky-deep: #e8c4b8;
+  --atmosphere-top: #f8e4db;
+  --atmosphere-mid: #faf3ef;
+  --atmosphere-edge: #f0e4de;
 }
 
 :root[data-theme='dark'] {
-  --paper: #0f1413;
-  --paper-deep: #161c1b;
-  --card: #1a2221;
-  --ink: #e6efed;
-  --muted: #97a8a4;
-  --faint: #6d7c78;
-  --rule: #e6efed;
-  --line: rgba(230, 239, 237, 0.14);
-  --line-soft: rgba(230, 239, 237, 0.08);
-  --accent: #6fd4c4;
-  --accent-bright: #8ae0d2;
-  --accent-ink: #0c1211;
-  --mint: rgba(111, 212, 196, 0.16);
-  --wash: rgba(111, 212, 196, 0.1);
-  --glow: rgba(111, 212, 196, 0.3);
-  --sky: #152422;
-  --sky-deep: #1c322e;
-  --atmosphere-top: #152420;
-  --atmosphere-mid: #0f1413;
-  --atmosphere-edge: #121918;
+  --paper: #141110;
+  --paper-deep: #1c1715;
+  --card: #221c1a;
+  --ink: #f3e9e5;
+  --muted: #b09a94;
+  --faint: #88736d;
+  --rule: #f3e9e5;
+  --line: rgba(243, 233, 229, 0.14);
+  --line-soft: rgba(243, 233, 229, 0.08);
+  --accent: #f0a08c;
+  --accent-bright: #f8b5a4;
+  --accent-ink: #1a1210;
+  --mint: rgba(240, 160, 140, 0.16);
+  --wash: rgba(240, 160, 140, 0.1);
+  --glow: rgba(240, 160, 140, 0.32);
+  --sky: #241816;
+  --sky-deep: #32201c;
+  --atmosphere-top: #241816;
+  --atmosphere-mid: #141110;
+  --atmosphere-edge: #1a1412;
 }
 
 @layer base {
@@ -173,7 +173,7 @@
   height: 2px;
 }
 
-/* Live chip dot — green means GO */
+/* Live chip dot — salmon means GO */
 
 .live-dot {
   display: inline-block;
